@@ -1,0 +1,63 @@
+swagger: "2.0"
+info:
+  description: "This is AzureEventHub REST API server. "
+  version: "1.0.0"
+  title: "APIGEE proxy to ingest message to AzureEventHub"
+host: "AzureEventHub.apigee.com"
+basePath: "/v1"
+tags:
+- name: "org_azure_event_hub"
+  description: "Post a new event data to Azure Event Hub"
+schemes:
+- "https"
+paths:
+  /azure_event_hub1/topic1:
+    post:
+      tags:
+      - "org_azure_event_hub"
+      summary: "Push a message to event hub topic1"
+      description: "This method is used to Ingest new streaming to event hub topic1"
+      operationId: "push_message"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "message pushed to event hub topic1"
+        required: true
+        schema:
+          $ref: "#/definitions/EventHubMessageSchema"
+      responses:
+        "201":
+          description: "Event data posted successful"
+        "401":
+          description: "Authorization failure"
+        "500":
+          description: "Internal error"
+
+definitions:
+  EventHubMessageSchema:
+    type: "object"
+    properties:
+      source_system:
+        type: "string"
+      event_type:
+        type: "string"
+      event_time:
+        type: "string"
+      sender_id:
+        type: "string"
+      data_json_string:
+        type: "string"
+    required:
+      - source_system
+      - event_type
+      - sender_id
+      - data_json_string
+    example:
+      source_system: CRM
+      event_type: sales_order
+      event_time: "2021-12-11 01:00:26.822169"
+      data_json_string: {"order_id": 1001, "timestamp": "2021-12-11 01: 00: 26.822169", "state": "VIC", "postcode": 3000, "country": "Australia"}
+      sender_id: "app_user1"
+      
