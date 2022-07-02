@@ -1,39 +1,77 @@
-### create layer for event hub -----------------------
+############## upgrade ptyhon version ###################
+-------------------change python3.9 in cloud9 --------------
+sudo yum install gcc openssl-devel bzip2-devel libffi-devel 
+
+cd /opt 
+sudo wget https://www.python.org/ftp/python/3.9.6/Python-3.9.6.tgz 
+
+sudo tar xzf Python-3.9.6.tgz 
+cd Python-3.9.6 
+sudo ./configure --enable-optimizations 
+sudo make install 
+sudo rm -f /opt/Python-3.9.6.tgz 
+
+python3.9 -m venv env 
+
+source env/bin/activate 
+
+deactivate
+
+-------------------change python3.8 in cloud9 --------------
+sudo yum install gcc openssl-devel bzip2-devel libffi-devel 
+
+cd /opt 
+sudo wget https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tgz 
+
+sudo tar xzf Python-3.8.6.tgz 
+cd Python-3.8.6 
+sudo ./configure --enable-optimizations 
+sudo make install 
+sudo rm -f /opt/Python-3.8.6.tgz 
+
+python3.8 -m venv env 
+
+source env/bin/activate 
+
+deactivate
+
+
+################ create layer for event hub ################################
 mkdir folder
 cd folder
-python3.7 -m venv myvenv
+python3.9 -m venv myvenv
 source myvenv/bin/activate
 pip install azure-eventhub
 deactivate
 mkdir python
 cd python
-cp -r ../myvenv/lib/python3.7/site-packages/* .
+cp -r ../myvenv/lib/python3.9/site-packages/* .
 cd ..
 zip -r zevent_hub_layer.zip python
 
 
 pip install --upgrade awscli
 
-aws lambda publish-layer-version --layer-name zevent_hub_layer1 --zip-file fileb://zevent_hub_layer.zip --compatible-runtimes python3.7 python3.8
+aws lambda publish-layer-version --layer-name zevent_hub_layer_py39 --zip-file fileb://zevent_hub_layer.zip --compatible-runtimes python3.9
 
 
 ### create layer for identity managment for service principal
 mkdir folder1
 cd folder1
-python3.7 -m venv myvenv
+python3.9 -m venv myvenv
 source myvenv/bin/activate
 pip install azure-identity
 deactivate
 mkdir python
 cd python
-cp -r ../myvenv/lib/python3.7/site-packages/* .
+cp -r ../myvenv/lib/python3.9/site-packages/* .
 cd ..
 zip -r zazure_identity_layer.zip python
 
 
 pip install --upgrade awscli
 
-aws lambda publish-layer-version --layer-name zazure_identity_layer1 --zip-file fileb://zazure_identity_layer.zip --compatible-runtimes python3.7 python3.8
+aws lambda publish-layer-version --layer-name zazure_identity_layer_py39 --zip-file fileb://zazure_identity_layer.zip --compatible-runtimes python3.9
 
 #### create new lambda from cloud9
 ------------------------------
