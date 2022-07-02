@@ -1,4 +1,3 @@
-
 import json
 
 def lambda_handler(event, context):
@@ -22,7 +21,7 @@ import json
 
 from azure.eventhub import EventHubProducerClient, EventData
 
-CONNECTION_STR = "Endpoint=sb://ehubnamex1.servicebus.windows.net/;SharedAccessKeyName=xxxxxxxxxx"
+CONNECTION_STR = os.environ.get('CONNECTION_STR')
 EVENTHUB_NAME = "ehubtopic1"
 
 """
@@ -33,13 +32,13 @@ import os
 from azure.identity import EnvironmentCredential
 from azure.identity import ClientSecretCredential
 
-EVENTHUB_FQDN ="ehubnamex1.servicebus.windows.net"
+EVENTHUB_FQDN ="zehubname1.servicebus.windows.net"
 # EVENTHUB_NAME = "ehubtopic1"
 
 # app name - zdatalake1DevApp1
-TENANT_ID = "xxxxxxxxxx"
-CLIENT_ID = "xxxxxxxxxx"
-CLIENT_SECRET = "xxxxxxxxxx"
+TENANT_ID = os.environ.get('TENANT_ID')
+CLIENT_ID = os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 def get_customer_transaction_Stream():
     data = {}
