@@ -1,0 +1,99 @@
+
+import json
+
+def lambda_handler(event, context):
+    # TODO implement
+    print("z1 start lambda_handler")
+    # send_msg_to_event_hub(); 
+    send_msg_to_event_hub_msi();
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Hello from Lambda5.0')
+    }
+
+
+
+import time
+import os
+import uuid
+import datetime
+import random
+import json
+
+from azure.eventhub import EventHubProducerClient, EventData
+
+CONNECTION_STR = "Endpoint=sb://ehubnamex1.servicebus.windows.net/;SharedAccessKeyName=xxxxxxxxxx"
+EVENTHUB_NAME = "ehubtopic1"
+
+"""
+Receiving events from an Event Hub with authentication token
+"""
+import os
+# from azure.eventhub import EventHubProducerClient
+from azure.identity import EnvironmentCredential
+from azure.identity import ClientSecretCredential
+
+EVENTHUB_FQDN ="ehubnamex1.servicebus.windows.net"
+# EVENTHUB_NAME = "ehubtopic1"
+
+# app name - zdatalake1DevApp1
+TENANT_ID = "xxxxxxxxxx"
+CLIENT_ID = "xxxxxxxxxx"
+CLIENT_SECRET = "xxxxxxxxxx"
+
+def get_customer_transaction_Stream():
+    data = {}
+    now = datetime.datetime.now()
+    str_now = now.isoformat()
+    data['transaction_id'] = str(uuid.uuid4())
+    data['store_id'] = random.choice(['store1','store2', 'store3', 'store4'])
+    data['customer_number'] = random.randint(21000,29999)
+    data['product_number'] = random.choice(['Burger','Pizza','Pasta', 'IceCream','Juice','Chips'])
+    data['sold_quantity'] = random.randint(1,5)
+    data['customer_total_spent'] = random.randint(20,100)
+    data['customer_state'] = random.choice(['NSW','VIC', 'QLD', 'WA','SA','NT'])
+    data['transaction_time'] = str_now
+    return data
+
+def send_msg_to_event_hub():
+    try:
+        # Create a producer client to produce and publish events to the event hub.
+        producer = EventHubProducerClient.from_connection_string(conn_str = CONNECTION_STR, eventhub_name = EVENTHUB_NAME)
+
+        print("z-----------------------EventHubProducerClient created")
+        for y in range(0, 1): # send number of events in a batch.
+            event_data_batch = producer.create_batch() # Create a batch.You will add events to the batch later.
+
+            message = get_customer_transaction_Stream()
+            s = json.dumps(message) # Convert the message into a JSON string.
+            event_data_batch.add(EventData(s)) # Add event data to the batch.
+            print("message sent : ",s)
+            producer.send_batch(event_data_batch) # Send the batch of events to the event hub.
+        # Close the producer.
+        producer.close()
+    except Exception as e:
+        print(e)
+
+
+def send_msg_to_event_hub_msi():
+    try:
+        # Create a producer client to produce and publish events to the event hub.
+        credential_msi = ClientSecretCredential(tenant_id=TENANT_ID, client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+        producer = EventHubProducerClient(fully_qualified_namespace=EVENTHUB_FQDN,
+                                     eventhub_name=EVENTHUB_NAME,
+                                     credential=credential_msi)
+     
+
+        print("z-----------------------EventHubProducerClient created")
+        for y in range(0, 1): # send number of events in a batch.
+            event_data_batch = producer.create_batch() # Create a batch.You will add events to the batch later.
+
+            message = get_customer_transaction_Stream()
+            s = json.dumps(message) # Convert the message into a JSON string.
+            event_data_batch.add(EventData(s)) # Add event data to the batch.
+            print("message sent : ",s)
+            producer.send_batch(event_data_batch) # Send the batch of events to the event hub.
+        # Close the producer.
+        producer.close()
+    except Exception as e:
+        print(e)
