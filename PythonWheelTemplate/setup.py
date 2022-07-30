@@ -1,7 +1,7 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 setup(
-    name="redshift_module",
-    version="0.1",
-    packages=['redshift_module']
-) 
+    name ="data_framework",
+    version = "0.1.1",
+    packages=find_packages(include=['utils','utils.*','redshift_module']),
+)
