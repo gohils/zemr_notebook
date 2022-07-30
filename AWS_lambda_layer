@@ -1,3 +1,21 @@
+############## download python package dependencies and uploading into private vm ############## 
+# create virtual environment
+
+python -m venv .venv
+.venv\Scripts\activate
+
+---- download python wheel dependecies from pypi to local dir
+pip wheel -r requirements.txt --wheel-dir=./wheelhouse 
+---- install python wheel dependecies from local wheels dir
+pip install -r requirements.txt --no-index --find-links=./wheelhouse 
+
+------ list all install package into requirement files
+pip freeze > ./wheelhouse/requirements.txt
+------ uninstall all python lib 
+pip uninstall -r ./wheelhouse/requirements.txt -y
+
+pip list
+
 ############## upgrade ptyhon version ###################
 -------------------change python3.9 in cloud9 --------------
 sudo yum install gcc openssl-devel bzip2-devel libffi-devel 
