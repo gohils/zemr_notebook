@@ -1,0 +1,1 @@
+{"extract": "Extract(input_dataframe=input_df,input_dict_params=app_input_param).run()", "transform": ["Transform1(input_dataframe=input_df,input_dict_params=app_input_param).run()", "Transform2(input_dataframe=input_df,input_dict_params=app_input_param).run()"], "load": "Load(input_dataframe=input_df,input_dict_params=app_input_param).run()"}
