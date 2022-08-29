@@ -1,0 +1,107 @@
+variables:
+- group: Databricks-dev-environment
+- group: Databricks-stg-environment
+- group: Databricks-prod-environment
+- name: 'libs' # new variable defined in YAML
+  value: './dist'
+- name: 'dbfspath' # new variable defined in YAML
+  value: '/lib-dist/wheelhouse'
+
+# build and package wheel lib to dbfs and init script will install them
+
+trigger: none
+
+stages:
+- stage: deploy_library_to_dev
+  displayName: 'Deploy wheel library to Databricks DBFS'
+  jobs:
+  - job: build_package
+    displayName: build_package
+    pool: 
+      vmImage: 'ubuntu-latest'
+    variables:
+      pythonVersion: 3.8
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+        addToPath: true
+        architecture: 'x64'
+      displayName: 'Use Python Version: $(pythonVersion)'
+
+    - checkout: self
+      persistCredentials: true
+      clean: true
+      displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install setuptools wheel
+        pip install -e .
+      displayName: 'Install dependencies'
+
+    - script: |
+        python setup.py bdist_wheel --universal
+      displayName: 'Build wheel package'
+
+# ---- download python wheel dependecies from pypi to local dir './wheelhouse'
+# ---- install python wheel dependecies from local wheels dir
+# pip install -r requirements.txt --no-index --find-links=./wheelhouse 
+    - script: |
+        pip wheel -r requirements.txt --wheel-dir=./dist 
+      displayName: 'Add dependent libraries wheel package'
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: './dist'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/wheel-libraries$(Build.BuildId).wheelhouse.zip
+        replaceExistingArchive: true
+
+    # - task: CopyFiles@2
+    #   inputs:
+    #     SourceFolder: './dist'
+    #     contents: '**'
+    #     targetFolder: $(Build.ArtifactStagingDirectory)
+    #   displayName: 'Copy package folder'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: $(Build.ArtifactStagingDirectory)/wheel-libraries$(Build.BuildId).wheelhouse.zip
+        artifactName: libs
+      displayName: 'Publish DevOps Databricks library wheel house'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install databricks-cli
+      displayName: 'Setup  databricks-cli'
+    - script: |
+        echo "Uploading libs at $(Build.ArtifactStagingDirectory) to workspace dbfs:/lib-dist/wheelhouse ..."
+        databricks fs mkdirs dbfs:/lib-dist/wheelhouse
+        databricks fs cp "$(Build.ArtifactStagingDirectory)" dbfs:/lib-dist/wheelhouse --recursive --overwrite
+      env:
+        DATABRICKS_HOST: '$(databricksDomain_prod)'
+        DATABRICKS_TOKEN: '$(databricksToken_prod)'
+      displayName: 'Upload libs'
+
+    - script: |
+        echo "Installing libs dbfs:/lib-dist ..."
+        for file in `databricks fs ls dbfs:/lib-dist --absolute`
+        do
+            extension="${file##*.}"
+            if [ $extension = "whl" ]
+            then
+                echo "Uploading libs $file ..."
+                databricks fs cp $file dbfs:/FileStore/jars --overwrite
+            fi
+        done
+      condition: succeeded()
+      env:
+        DATABRICKS_HOST: '$(databricksDomain_prod)'
+        DATABRICKS_TOKEN: '$(databricksToken_prod)'
+        # CLUSTER: '$(databricksClusterId_prod)'
+      displayName: 'Upload wheel libs to DBFS'
+

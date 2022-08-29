@@ -1,0 +1,138 @@
+variables:
+- group: Databricks-dev-environment
+- group: Databricks-stg-environment
+- group: Databricks-prod-environment
+
+
+trigger: none
+
+stages:
+- stage: Build_Unit_testing
+  displayName: 'Build and Unit Testing library'
+  jobs:
+  - job: build_unit_test
+    displayName: build_unit_test
+    pool: 
+      vmImage: 'ubuntu-latest'
+    variables:
+      pythonVersion: 3.8
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+        addToPath: true
+        architecture: 'x64'
+      displayName: 'Use Python Version: $(pythonVersion)'
+
+    - script: env | sort
+      displayName: 'Environment / Context'
+
+    - checkout: self
+      persistCredentials: true
+      clean: true
+      displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -e .
+      displayName: 'Install dependencies'
+
+    - script: |
+        pytest common/tests --cov
+      displayName: 'Run Unit tests - pytest'
+
+
+- stage: deploy_library_to_dev
+  displayName: 'Deploy wheel library to Databricks DBFS'
+  jobs:
+  - job: build_package
+    displayName: build_package
+    pool: 
+      vmImage: 'ubuntu-latest'
+    variables:
+      pythonVersion: 3.8
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(pythonVersion)'
+        addToPath: true
+        architecture: 'x64'
+      displayName: 'Use Python Version: $(pythonVersion)'
+
+    - checkout: self
+      persistCredentials: true
+      clean: true
+      displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -e .
+      displayName: 'Install dependencies'
+
+    - script: |
+        python setup.py bdist_wheel --universal
+      displayName: 'Build wheel package'
+
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: './dist'
+        contents: '**'
+        targetFolder: $(Build.ArtifactStagingDirectory)
+      displayName: 'Copy package folder'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: $(Build.ArtifactStagingDirectory)
+        artifactName: libs
+      displayName: 'Publish DevOps Scripts'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install databricks-cli
+      displayName: 'Setup  databricks-cli'
+    - script: |
+        echo "Uploading libs at $(Build.ArtifactStagingDirectory) to workspace dbfs:/lib-dist ..."
+        databricks fs mkdirs dbfs:/lib-dist
+        databricks fs cp "$(Build.ArtifactStagingDirectory)" dbfs:/lib-dist --recursive --overwrite
+      env:
+        DATABRICKS_HOST: '$(databricksDomain_prod)'
+        DATABRICKS_TOKEN: '$(databricksToken_prod)'
+      displayName: 'Upload libs'
+
+    - script: |
+        echo "Installing libs dbfs:/lib-dist ..."
+        for file in `databricks fs ls dbfs:/lib-dist --absolute`
+        do
+            extension="${file##*.}"
+            if [ $extension = "whl" ]
+            then
+                echo "Uploading libs $file ..."
+                databricks fs cp $file dbfs:/FileStore/jars --overwrite
+            fi
+        done
+      condition: succeeded()
+      env:
+        DATABRICKS_HOST: '$(databricksDomain_prod)'
+        DATABRICKS_TOKEN: '$(databricksToken_prod)'
+        # CLUSTER: '$(databricksClusterId_prod)'
+      displayName: 'Upload wheel libs to DBFS'
+
+    # - script: |
+    #     echo "Installing libs dbfs:/lib-dist ..."
+    #     for file in `databricks fs ls dbfs:/lib-dist --absolute`
+    #     do
+    #         extension="${file##*.}"
+    #         if [ $extension = "whl" ]
+    #         then
+    #             echo "Installing libs $file ..."
+    #             databricks libraries install --cluster-id $CLUSTER --whl $file
+    #         fi
+    #     done
+    #   condition: succeeded()
+    #   env:
+    #     DATABRICKS_HOST: '$(databricksDomain_prod)'
+    #     DATABRICKS_TOKEN: '$(databricksToken_prod)'
+    #     # CLUSTER: '$(databricksClusterId_prod)'
+    #   displayName: 'Install libs'
