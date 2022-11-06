@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: VPC function.
+Resources:
+  zsqsvpcendpoint1:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: zLambdaFunction
+      Handler: index.lambda_handler
+      Runtime: python3.7
+      Role: >-
+        arn:aws:iam::908414048419:role/service-role/zget_s3_vpc_endpoint1-role-r5rf9ww5
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+          import os
+
+          def lambda_handler(event, context):
+              # TODO implement
+              print("z1 start lambda_handler")
+              # send_msg_to_event_hub(); 
+
+              return {
+                  'statusCode': 200,
+                  'body': json.dumps('Hello from Lambda5.0')
+              }          
+
+      Timeout: 5
+      TracingConfig:
+        Mode: Active
+
+      VpcConfig:
+        SecurityGroupIds:
+          - sg-06b7992411e06c03c
+        SubnetIds:
+          - subnet-0daf8e32bfd363bdb
+          - subnet-04e47b3e3888c8ca6
