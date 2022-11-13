@@ -1,3 +1,6 @@
+https://aws.amazon.com/blogs/big-data/automate-amazon-redshift-serverless-data-warehouse-management-using-aws-cloudformation-and-the-aws-cli/ </br>
+https://aws.amazon.com/blogs/big-data/automate-amazon-redshift-cluster-creation-using-aws-cloudformation/
+
 # Git Command for new feature branch and merge conflict for pull request from feature to master
 
 
