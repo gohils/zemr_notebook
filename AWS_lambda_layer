@@ -148,3 +148,4 @@ pip install --upgrade awscli
 
 aws lambda create-function --function-name ztestFunction --runtime python3.9 --role arn:aws:iam::123:role/service-role/zlambda_role1 --zip-file fileb:///home/ec2-user/environment/zlambda1/lambda.zip --handler lambda_function.lambda_handler
 
+aws lambda update-function-code --function-name ztestFunction --s3-bucket zs3-test1 --s3-key lambda.zip
