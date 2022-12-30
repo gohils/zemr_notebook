@@ -1,0 +1,27 @@
+aws redshift create-cluster --node-type dc2.large --cluster-type single-node --master-username adminuser --master-user-password TopSecret1 --cluster-identifier zmycluster
+
+aws redshift modify-cluster-iam-roles \
+    --cluster-identifier zmycluster \
+    --add-iam-roles 'arn:aws:iam::xxxxx:role/zredshift'
+
+aws redshift modify-cluster-iam-roles \
+    --cluster-identifier zmycluster \
+    --default-iam-role-arn 'arn:aws:iam::xxxxx:role/zredshift'
+
+
+aws redshift describe-clusters
+
+aws redshift delete-cluster --cluster-identifier zmycluster --skip-final-cluster-snapshot
+
+aws ec2 run-instances \
+    --image-id ami-0b5eea76982371e91 \
+    --instance-type t2.micro \
+    --subnet-id subnet-xxx\
+    --security-group-ids sg-xxxx\
+    --iam-instance-profile Name=zec2-ssm-access-role \
+    --associate-public-ip-address \
+    --key-name zec2key1 
+
+
+
+aws ec2 terminate-instances --instance-ids i-5203422c
