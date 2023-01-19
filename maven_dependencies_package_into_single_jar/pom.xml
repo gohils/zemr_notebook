@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+<modelVersion>4.0.0</modelVersion>
+<groupId>com.zmyorg</groupId>
+<artifactId>zdatabricks-depencies-package</artifactId>
+<version>1.0</version>
+<packaging>jar</packaging>
+
+<dependencies>
+    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-eventhubs-spark -->
+    <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-eventhubs-spark_2.12</artifactId>
+        <version>2.3.17</version>
+    </dependency>
+    <dependency>
+        <groupId>com.azure.cosmos.spark</groupId>
+        <artifactId>azure-cosmos-spark_3-2_2-12</artifactId>
+        <version>4.12.2</version>
+    </dependency>
+</dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.4.1</version>
+            <configuration>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+            </configuration>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+            </executions>        
+        </plugin> 
+    </plugins>
+</build>
+</project>
