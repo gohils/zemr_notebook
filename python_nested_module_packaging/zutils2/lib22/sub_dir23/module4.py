@@ -9,8 +9,14 @@ import time
 # pip installed python packages
 # from pynput.keyboard import Key, Controller
 
+from zutils2.lib22.sub_dir23 import module3
+
 def module4_method1():
     print("module4_method1 is executed")
+
+    print("----------- module3 is called from module4 ----------")
+    mod_cls1 = module3.Module3Class1()
+    mod_cls1.configure()
 
 class Module2Class2:
     """Class that performs functions for login"""
