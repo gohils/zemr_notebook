@@ -31,6 +31,26 @@ git add .
 git commit -m "feature1 v1 complete"
 push local branch to remore
 git push -u origin feature_branch
+# create virtual environment
+
+python -m venv .venv
+.venv\Scripts\activate
+
+pip install setuptools wheel
+pip install -r requirements.txt 
+create setup.py
+python setup.py sdist bdist_wheel
+
+pip list
+The following is need to install library locally to avoid module not found error
+pip install -e .
+
+---- download python wheel dependecies from pypi to local dir
+pip wheel -r requirements.txt --wheel-dir=./wheelhouse 
+---- install python wheel dependecies from local wheels dir
+pip install -r requirements.txt --no-index --find-links=./wheelhouse 
+
+
 git checkout develop
 git merge feature_branch
 git checkout main
