@@ -1,3 +1,23 @@
+# create virtual environment
+
+python -m venv .venv
+.venv\Scripts\activate
+
+pip install setuptools wheel
+pip install -r requirements.txt 
+create setup.py
+python setup.py sdist bdist_wheel
+
+pip list
+The following is need to install library locally to avoid module not found error
+pip install -e .
+
+---- download python wheel dependecies from pypi to local dir
+pip wheel -r requirements.txt --wheel-dir=./wheelhouse 
+---- install python wheel dependecies from local wheels dir
+pip install -r requirements.txt --no-index --find-links=./wheelhouse 
+
+
 Python design patterns - https://sbcode.net/python/
 https://aws.amazon.com/blogs/big-data/automate-amazon-redshift-serverless-data-warehouse-management-using-aws-cloudformation-and-the-aws-cli/ </br>
 https://aws.amazon.com/blogs/big-data/automate-amazon-redshift-cluster-creation-using-aws-cloudformation/
