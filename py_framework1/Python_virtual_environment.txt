@@ -1,0 +1,28 @@
+python -m venv .venv
+.venv\Scripts\activate
+
+pip install azure-eventhub
+pip install azure-eventhub-checkpointstoreblob-aio
+
+pip install boto3
+
+python recv.py
+
+pip install setuptools>=45
+pip install wheel
+pip install amazon_kclpy
+pip install pandas
+pip install boto3
+
+python kcl_helper.py -j "C:\Program Files\Java\jdk1.8.0_201\bin\java" -p kclconfig.properties --print_command
+python kcl_helper.py --java "C:\Program Files\Java\jdk1.8.0_201\bin\java"
+pip3 install setuptools-rust
+pip install -r requirements.txt
+
+azure-functions==1.7.2
+azure-functions-durable==1.1.1
+azure-storage-blob==12.9.0
+azure-storage-file-datalake==12.5.0
+pandas==0.25.3
+cryptography==3.4.8
+pyarrow==5.0.0
