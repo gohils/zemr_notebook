@@ -17,12 +17,6 @@ pip wheel -r requirements.txt --wheel-dir=./wheelhouse
 ---- install python wheel dependecies from local wheels dir
 pip install -r requirements.txt --no-index --find-links=./wheelhouse 
 
-
----- download python wheel dependecies from pypi to local dir
-pip wheel -r requirements.txt --wheel-dir=./wheelhouse 
----- install python wheel dependecies from local wheels dir
-pip install -r requirements.txt --no-index --find-links=./wheelhouse 
-
 ------ list all install package into requirement files
 pip freeze > ./wheelhouse/requirements.txt
 ------ uninstall all python lib 
