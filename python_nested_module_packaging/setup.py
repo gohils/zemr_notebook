@@ -9,7 +9,7 @@ setup(
 # this entry_points are shortcuts can be called directly after pip install data_framework from command line      
     entry_points={
         'console_scripts': [
-            'run_mod2 = zutils1.lib2.sub_dir3.module2:module2_method1',
-            'run_mod4 = zutils2.lib22.sub_dir23.module4:module4_method1',
+            'run_mod2 = zutils1.lib1.mod2:module2_method1',
+            'run_mod4 = zutils2.lib2.transform1:module4_method1',
         ]}
 )
