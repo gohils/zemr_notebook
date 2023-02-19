@@ -1,0 +1,34 @@
+{
+	"source_table": "input_file_table1",
+	"source_type": "csv",
+	"target_table": "output_file_table1",
+	"target_type": "parquet",
+	"task_list": [{
+			"taskname": "check1",
+			"classname": "Task1Class",
+			"config_details": {
+				"param11": "extract_task_v11",
+				"param12": "extract_task_v12",
+				"param13": "extract_task_v13"
+			}
+		},
+		{
+			"taskname": "check1",
+			"classname": "Task2Class",
+			"config_details": {
+				"param21": "transform_task_v21",
+				"param22": "transform_task_v22",
+				"param23": "transform_task_v23"
+			}
+		},
+		{
+			"taskname": "check1",
+			"classname": "Transform1Class",
+			"config_details": {
+				"param31": "load_task_v31",
+				"param32": "load_task_v32",
+				"param33": "load_task_v33"
+			}
+		}
+	]
+}
