@@ -38,6 +38,10 @@ AWS CICD repo1
 
 ####  A complete example demonstrating a Feature Branch Flow is as follows. Assuming we have a repo setup with a main branch.
 
+The commands to discard all local changes in Git are:
+git reset –hard
+git clean -fxd
+
 git checkout main
 
 git checkout -b develop
