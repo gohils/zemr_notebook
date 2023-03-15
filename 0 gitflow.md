@@ -1,3 +1,27 @@
+
+### commands to discard all local changes in Git are:
+| Command | Description |
+| ------- | ----------- |
+|git reset –hard| reset local branch to current HEAD |
+|git clean -fxd| remove local file which are not part of previous commit |
+|git checkout commit_id -- filename.txt | checkout restore file from any commit |
+
+#####  How do I find and restore a deleted file in a Git repository?
+git checkout commit_id -- filename.txt -> checkout restore file from any commit
+Find the last commit that affected the given path. As the file isn't in the HEAD commit, that previous commit must have deleted it.
+
+git rev-list -n 1 HEAD -- <file_path>
+Then checkout the version at the commit before, using the caret (^) symbol:
+
+git checkout <deleting_commit>^ -- <file_path>
+Or in one command, if $file is the file in question.
+
+git checkout $(git rev-list -n 1 HEAD -- "$file")^ -- "$file"
+If you are using zsh and have the EXTENDED_GLOB option enabled, the caret symbol won't work. You can use ~1 instead.
+
+git checkout $(git rev-list -n 1 HEAD -- "$file")~1 -- "$file"
+
+
 ## Initialize
 
 gitflow | git
@@ -575,3 +599,21 @@ Deleted branch hotfix-1.2.1 (was abbe5d6).
 
 
 •	Note: Any commit in master is a merge commit (either from a release or a hotfix branch) and represents a new release that is shipped to the customer.
+
+	
+
+## How do I find and restore a deleted file in a Git repository?
+
+#####  git checkout commit_id -- filename.txt -> checkout restore file from any commit
+Find the last commit that affected the given path. As the file isn't in the HEAD commit, that previous commit must have deleted it.
+
+git rev-list -n 1 HEAD -- <file_path>
+Then checkout the version at the commit before, using the caret (^) symbol:
+
+git checkout <deleting_commit>^ -- <file_path>
+Or in one command, if $file is the file in question.
+
+git checkout $(git rev-list -n 1 HEAD -- "$file")^ -- "$file"
+If you are using zsh and have the EXTENDED_GLOB option enabled, the caret symbol won't work. You can use ~1 instead.
+
+git checkout $(git rev-list -n 1 HEAD -- "$file")~1 -- "$file"
