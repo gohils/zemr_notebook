@@ -2,6 +2,10 @@
 ### commands to discard all local changes in Git are:
 | Command | Description |
 | ------- | ----------- |
+| git log --all --oneline --graph| View changes (briefly) |
+| `git diff [source branch] [target branch]` | Preview changes before merging |
+| `git diff --name-only` | Preview changes before merging |
+|git merge --abort| abort merge conflict |
 |git reset –hard| reset local branch to current HEAD |
 |git clean -fxd| remove local file which are not part of previous commit |
 |git checkout commit_id -- filename.txt | checkout restore file from any commit |
