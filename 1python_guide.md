@@ -4,13 +4,6 @@ title: "Python Guide"
 description: "It is our collective responsibility to enforce this Python Style Guide since our chosen linter does not catch everything."
 ---
 
-## On this page
-{:.no_toc .hidden-md .hidden-lg}
-
-- TOC
-{:toc .toc-list-icons .hidden-md .hidden-lg}
-
----
 
 ## Python Guide
 
@@ -736,6 +729,86 @@ bar(some_str, another_string)
 bar(some_str=some_str, another_string=another_string)
 ```
 
+#### Naming Conventions
+<p>The table below outlines some of the common naming styles in Python code and when you should use them: </p>
+<div class="table-responsive">
+<table class="table table-hover">
+<thead>
+<tr>
+<th>Type</th>
+<th>Naming Convention</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Function</td>
+<td>Use a lowercase word or words. Separate words by underscores to improve readability.</td>
+<td><code>function</code>, <code>my_function</code></td>
+</tr>
+<tr>
+<td>Variable</td>
+<td>Use a lowercase single letter, word, or words. Separate words with underscores to improve readability.</td>
+<td><code>x</code>, <code>var</code>, <code>my_variable</code></td>
+</tr>
+<tr>
+<td>Class</td>
+<td>Start each word with a capital letter. Do not separate words with underscores. This style is called <a href="https://en.wikipedia.org/wiki/Camel_case">camel case or pascal case</a>.</td>
+<td><code>Model</code>, <code>MyClass</code></td>
+</tr>
+<tr>
+<td>Method</td>
+<td>Use a lowercase word or words. Separate words with underscores to improve readability.</td>
+<td><code>class_method</code>, <code>method</code></td>
+</tr>
+<tr>
+<td>Constant</td>
+<td>Use an uppercase single letter, word, or words. Separate words with underscores to improve readability.</td>
+<td><code>CONSTANT</code>, <code>MY_CONSTANT</code>, <code>MY_LONG_CONSTANT</code></td>
+</tr>
+<tr>
+<td>Module</td>
+<td>Use a short, lowercase word or words. Separate words with underscores to improve readability.</td>
+<td><code>module.py</code>, <code>my_module.py</code></td>
+</tr>
+<tr>
+<td>Package</td>
+<td>Use a short, lowercase word or words. Do not separate words with underscores.</td>
+<td><code>package</code>, <code>mypackage</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These are some of the common naming conventions and examples of how to use them. But in order to write readable code, you still have to be careful with your choice of letters and words. In addition to choosing the correct naming styles in your code, you also have to choose the names carefully. Below are a few pointers on how to do this as effectively as possible.</p>
+</section><section class="section3" id="how-to-choose-names"><h3>How to Choose Names<a class="headerlink" href="#how-to-choose-names" title="Permanent link"></a></h3>
+<p>Choosing names for your variables, functions, classes, and so forth can be challenging. You should put a fair amount of thought into your naming choices when writing code as it will make your code more readable. The best way to name your objects in Python is to use descriptive names to make it clear what the object represents.</p>
+<p>When naming variables, you may be tempted to choose simple, single-letter lowercase names, like <code>x</code>. But, unless you&rsquo;re using <code>x</code> as the argument of a mathematical function, it&rsquo;s not clear what <code>x</code> represents. Imagine you are storing a person&rsquo;s name as a <a href="https://realpython.com/python-strings/">string</a>, and you want to use string slicing to format their name differently. You could end up with something like this:</p>
+<div class="highlight python repl"><span class="repl-toggle" title="Toggle REPL prompts and output">&gt;&gt;&gt;</span><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Not recommended</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;John Smith&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="p">)</span>
+<span class="go">&#39;Smith, John&#39;</span>
+</code></pre></div>
+<p>This will work, but you&rsquo;ll have to keep track of what <code>x</code>, <code>y</code>, and <code>z</code> represent. It may also be confusing for collaborators. A much clearer choice of names would be something like this:</p>
+<div class="highlight python repl"><span class="repl-toggle" title="Toggle REPL prompts and output">&gt;&gt;&gt;</span><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Recommended</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;John Smith&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">last_name</span><span class="p">,</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="p">)</span>
+<span class="go">&#39;Smith, John&#39;</span>
+</code></pre></div>
+<p>Similarly, to reduce the amount of typing you do, it can be tempting to use abbreviations when choosing names. In the example below, I have defined a function <code>db()</code> that takes a single argument <code>x</code> and doubles it:</p>
+<div class="highlight python"><pre><span></span><code><span class="c1"># Not recommended</span>
+<span class="k">def</span> <span class="nf">db</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+</code></pre></div>
+<p>At first glance, this could seem like a sensible choice. <code>db()</code> could easily be an abbreviation for double. But imagine coming back to this code in a few days. You may have forgotten what you were trying to achieve with this function, and that would make guessing how you abbreviated it difficult.</p>
+<p>The following example is much clearer. If you come back to this code a couple of days after writing it, you&rsquo;ll still be able to read and understand the purpose of this function:</p>
+<div class="highlight python"><pre><span></span><code><span class="c1"># Recommended</span>
+<span class="k">def</span> <span class="nf">multiply_by_two</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
+</code></pre></div>
+<p>The same philosophy applies to all other data types and objects in Python. Always try to use the most concise but descriptive names possible. </p>
+	
 #### Making your script executable
 
 If your script is not able to be run even though you've just made it, it most likely needs to be executable. Run the following:
