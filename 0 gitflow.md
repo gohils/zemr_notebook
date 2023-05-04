@@ -5,10 +5,35 @@
 | git log --all --oneline --graph| View changes (briefly) |
 | `git diff [source branch] [target branch]` | Preview changes before merging |
 | `git diff --name-only` | Preview changes before merging |
+| `git diff --name-only origin/branch_name branch_name` | Preview changes between remote and local branch changes |
 |git merge --abort| abort merge conflict |
 |git reset –hard| reset local branch to current HEAD |
 |git clean -fxd| remove local file which are not part of previous commit |
 |git checkout commit_id -- filename.txt | checkout restore file from any commit |
+|git checkout origin/remote_branch_name -- filename.txt | restore file from remote repo branch |
+|git reset –-soft origin/remote_branch_name | reset local branch to current remote branch - keeping local changes/commits |
+|git reset –hard origin/remote_branch_name | reset local branch to current remote branch - deleting all local changes/commits |
+
+| resolve git merge conflict| |
+| ------- | ----------- |
+|1 - pull the most recent changes from remote to local repo | git pull |
+|2 - repo | git pull |
+|3 - checkout the source branch | git checkout <source_branch> |
+|4 - pull the destination branch into source_branch. At this point, pulling destination will try to merge it with source_branch and reveal all conflicts | git pull origin <destination_branch> |
+|5 - open the files and update to resolve conflict in local repo. save and commit conflict change  | git status <br> git add . <br> git commit -m "commit for conflict resolution" |
+|6 - push the changes to remote repo  | git push origin <source_branch> |
+|7 - start pull request on Azure devlop | if Azure devlop pull request is already started, pull request will updated automatically and ready for approval and complete |
+
+
+| new feature development flow| |
+| ------- | ----------- |
+|1 - checkout repo into local dev environment | git clone https://zrepo1@dev.azure.com/... |
+|2 - replicate remote branch (e.g. master or develop or base_feature) | git checkout develop <br> git pull |
+|3 - create feature branch from remote branch | git checkout -b feature/feature101 develop |
+|4 - preceed with feature development | git status <br> git add . <br> git commit -m "this is commit message for feature 1" |
+|5 - push the local branch to remote server | git push --set-upstream origin feature/feature101 |
+|6 - merge feature to other branch like integration branch | git checkout integration <br> git merge --no-ff feature/feature101 <br> git push origin integration |
+|7 - raise pull request to merge feature to develop | azure devops pull request to review code and merge |
 
 #####  How do I find and restore a deleted file in a Git repository?
 git checkout commit_id -- filename.txt -> checkout restore file from any commit
