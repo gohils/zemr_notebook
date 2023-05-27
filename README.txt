@@ -374,5 +374,13 @@ ls
 
 git log --oneline 
 
+----------------------------------------------------------------------------------------
+Data Quality Dimension
+Data Accuracy => e.g. check if country name, state name is valid from the list of value 
+Data Validity => e.g. check if format, type if telephone is number, email,date format etc 
+Data Timeliness => timely avaliability of data - weekly,daily,hourly 
+Data Completeness => check if field name/phone number/email is populated, null check control file to indicate the transmission is successful, check number of records
+Data Uniqueness => check if duplicate records/primary key validation etc
+Data Consistency => data validation across dataset 
 
 
