@@ -13,6 +13,7 @@
 |git checkout origin/remote_branch_name -- filename.txt | restore file from remote repo branch |
 |git reset –-soft origin/remote_branch_name | reset local branch to current remote branch - keeping local changes/commits |
 |git reset –hard origin/remote_branch_name | reset local branch to current remote branch - deleting all local changes/commits |
+|git checkout -b remote_branch origin/remote_branch | Pull changes from remote branch to local branch replicate remote branch only|
 
 | resolve git merge conflict| |
 | ------- | ----------- |
