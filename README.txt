@@ -383,4 +383,22 @@ Data Completeness => check if field name/phone number/email is populated, null c
 Data Uniqueness => check if duplicate records/primary key validation etc
 Data Consistency => data validation across dataset 
 
+----------------------------------------------------------------------------------------
+Data Governance Framework is collection of principal,policy and procedure to ensure the quality, integrity, discoverability, observability, security, accessibility, usability and auditability of your data assets.
 
+1) Data quality – data is in correct and consistent form 
+2) Data integrity – data is not tampered with as it moves throughout the organization. 
+3) Data discoverability - data is easilty discoverable with data catelog. 
+4) Data observability – system wide visibility into data movement - data lineage  
+5) Data security – data is classified and protected based on its sensitivity 
+6) Data accessibility – relevant employees can access the data 
+7) Data usability – data is readily available and usable with your tools. 
+8) Data auditability – data can be audited to detect problems.
+
+Data Quality Dimension
+Data Accuracy => e.g. check if country name, state name is valid from the list of value 
+Data Validity => e.g. check if format, type if telephone is number, email,date format etc 
+Data Timeliness => timely avaliability of data - weekly,daily,hourly 
+Data Completeness => check if field name/phone number/email is populated, null check control file to indicate the transmission is successful, check number of records
+Data Uniqueness => check if duplicate records/primary key validation etc
+Data Consistency => data validation across dataset 
