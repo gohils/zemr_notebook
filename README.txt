@@ -395,10 +395,49 @@ Data Governance Framework is collection of principal,policy and procedure to ens
 7) Data usability – data is readily available and usable with your tools. 
 8) Data auditability – data can be audited to detect problems.
 
-Data Quality Dimension
-Data Accuracy => e.g. check if country name, state name is valid from the list of value 
-Data Validity => e.g. check if format, type if telephone is number, email,date format etc 
-Data Timeliness => timely avaliability of data - weekly,daily,hourly 
-Data Completeness => check if field name/phone number/email is populated, null check control file to indicate the transmission is successful, check number of records
-Data Uniqueness => check if duplicate records/primary key validation etc
-Data Consistency => data validation across dataset 
+key capabilities for Data Governance Framework
+1.	Data Cataloging and Discovery – The automatic identification and physical record of data assets in a unified manner to enable logical search, description, and discovery of an organization’s data. 
+2.	Data Classification – Tagging data with appropriate information, privacy, or other sensitivity classifications to secure onward use and protection. 
+3.	Data Ownership – Ensuring data is owned for protection, description, access, and quality by accountable and empowered agents within the organization. 
+4.	Data Security – Ensuring data is encrypted, obfuscated, tokenized, or has other appropriate security measures applied in line with its classification. Includes capturing evidence of security application and management of data loss prevention. 
+5.	Data Sovereignty and Cross-Border Data Sharing – Ensuring data is being stored, accessed, and processed according to jurisdictional rules and prohibitions. 
+6.	Data Quality – Ensuring data is fit for purpose according to the core measures of data quality— accuracy, completeness, consistency, validity, relevance, and timeliness.
+7.	Data Lifecycle Management – Ensuring data is sourced, stored, processed, accessed, and disposed of in line with its legal, regulatory, and privacy lifecycle requirements, which are often defined in a retention schedule. 
+8.	Data Entitlements and Access Tracking – Data must only be accessible to those that are intending to access it. Auditing this access is an important part of evidencing and ensuring control.
+9.	Data Lineage – Ensuring it is possible to identify where data has originated, the steps it has undertaken, and where it is being used at a granularity and frequency that is relevant. 
+10.	Data Privacy – Define a framework for the protection of the privacy of data subjects that reflects the regulatory and privacy laws governing your organization. Ensure processes and technology are employed to ensure the privacy framework is actively applied. 
+11.	Trusted Source Management and Data Contracts – Large organizations may have similar data originating from or processed through a number of sources. Identifying and managing trusted sources and defining consumption data contracts is important to ensure data is being sourced from an agreed source of truth and the overall data architecture is being managed effectively. 
+12.	Ethical Use and Purpose – Increasingly, the ethical use of data is being questioned beyond privacy laws and data subject rights. As the use of AI and machine learning increases, it is important to ensure data is being processed in a way that customers would expect according to your company’s code of ethics. 
+13.	Master Data Management – Master data is the most commonly used and duplicated data within an organization. It is often the data that describes the core operational aspects of a company (for example, product, customer, employees, and company structure). Ensuring there is a single consistent view of this data is fundamental to accurate and reliable data usage.
+
+----------------------------
+Cloud data platform 
+Single data platform to store and analyse structure, semi-structure and unstructured data. 
+Single data platform that can support batch, real time and machine learning advanced analytical use cases, scale elastically and cost effectively. 
+
+Single data platform to support entire organisation to make fact based informed decision, more often instead of relying on guess work or assumptions. 
+
+Business benefits of using Cloud services –
+
+1.	Agility – With click of button, we can provision service or infrastructure to support new business initiative. We can quickly develop proof of concept to validate feasibility of new business requirements. If proof of concept is successful, Cloud services can accelerate Time-to-market by using infrastructure as a code to quickly deploy required infrastructure and Azure devops platform to quickly build, test and deploy solution. 
+
+2.	scalability – cloud services can be scaled elastically based on business needs – for example scaling up during special promotion or any specific time of the day and scale down to normal at other time
+
+3.	cost effectiveness – business can save cost with the consumption based pricing model and by using latest technological innovation like decoupling of storage from compute, Kubernetes and serverless architecture
+
+4.	Reliability - data backup, disaster recovery and redundancy - automatic failed over etc
+5.	Productivity - software upgrade and updating patches. 
+
+6.	Security – Azure provides enterprise grade security with five layer of defence - 
+Data protection, Access control, Authentication, Network security, Auditing & advanced threat protection.
+
+--------------------------------------------------------
+security with five layer of defence
+1 – Data protection which includes data encryption at rest and data encryption in transit , column level encryption, data masking
+2 – Access control – which includes fine grain access control with file, folder level access, sql permission for column and level access control 
+3 – Authentication – which includes active directory integration with multi-factor authentication.
+4 – Network protection which include network isolation with vnet, network security group, firewall protection
+5 – auditing, logging, monitoring and alerting with Azure Monitoring and advance threat protection with  Security centre
+
+
+
