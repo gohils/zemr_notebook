@@ -1,0 +1,14 @@
+Chatbot: Hello there! Welcome to Fortune Telecom Support. My name is Jessica. How can I assist you today?
+
+Customer: Hi Jessica, I've decided to cancel my mobile phone service with Fortune Telecom. Can you guide me through the cancellation process?
+
+Chatbot: I'm sorry to hear that you're considering canceling your service. I'll be happy to assist you with the cancellation process. To proceed, could you please provide me with your account number and the reason for cancellation?
+
+Customer: Certainly, my account number is 123456789. I'm canceling because I've found a more cost-effective plan with another provider.
+
+Chatbot: Thank you for providing the details. I understand your decision. I'll initiate the cancellation process for you, and you'll receive a confirmation email shortly. If you have any further questions or if there's anything else I can assist you with, feel free to ask.
+
+Customer: Appreciate your help, Jessica.
+
+Chatbot: You're welcome! If you ever decide to come back or if you have questions in the future, don't hesitate to reach out. Have a great day!
+

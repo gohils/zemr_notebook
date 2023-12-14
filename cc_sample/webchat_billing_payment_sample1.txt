@@ -1,0 +1,21 @@
+Chatbot: Hello! Welcome to Fortune Telecom Support. I am Lisa, your customer support officer. How may I assist you today?
+
+Customer: Good day, Lisa. I am reaching out regarding a discrepancy in my recent bill. There seems to be a charge that I do not recognize.
+
+Chatbot: I apologize for any inconvenience, and I appreciate your bringing this to our attention. I am here to help. Can you provide me with your account number and some details about the specific charge in question?
+
+Customer: Certainly, my account number is 876543210. The charge in question is listed as [specific description] on my statement.
+
+Chatbot: Thank you for providing that information. I will investigate this matter for you. Please allow me a moment to review your billing details.
+
+Customer: I appreciate your assistance, Lisa.
+
+Chatbot: Thank you for your patience. I have identified the charge in question, and it appears to be related to [specific service or transaction]. I will work on resolving this issue for you. In the meantime, is there anything else you would like to address regarding your billing?
+
+Customer: No, that covers my concerns for now. I am grateful for your help, Lisa.
+
+Chatbot: You're welcome! I will follow up with you as soon as the issue is resolved. If you have any further questions or concerns, feel free to reach out. Thank you for choosing Fortune Telecom!
+
+Customer: Thank you, Lisa. I appreciate your assistance.
+
+Chatbot: Anytime! Have a great day!

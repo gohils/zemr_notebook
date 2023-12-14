@@ -1,0 +1,19 @@
+Chatbot: Hello! Welcome to Fortune Telecom Support. I am Lisa, your customer support officer. How may I assist you today?
+
+Customer: I've been having frequent disconnections with my mobile service, and it's affecting my work. This is unacceptable!
+
+Chatbot: I'm sorry to hear about the disconnections affecting your work. I'll assist you in resolving this issue. Can you please provide me with your mobile number and details about when these disconnections started?
+
+Customer: My mobile number is 555-7890, and the disconnections started about two days ago.
+
+Chatbot: Thank you for the information. I'll investigate the mobile service disconnections. Please allow me a moment.
+
+Customer: I appreciate your help.
+
+Chatbot: Thank you for your patience, [Customer]. It appears there might be a technical issue in your area. I'll escalate this matter to our technical team for further investigation. You'll receive updates via SMS. Is there anything else I can assist you with?
+
+Customer: No, that's all. I just need this issue fixed urgently.
+
+Chatbot: I understand the urgency, and I apologize for the inconvenience. We'll prioritize resolving this for you. If you have more concerns or questions, feel free to reach out. Thank you for bringing this to our attention.
+
+Customer: Thank you.
