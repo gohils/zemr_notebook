@@ -1,0 +1,33 @@
+WITH Sales_CTE AS (
+  SELECT
+    Orders.OrderID,
+    Customers.CustomerName,
+    Products.ProductName,
+    OrderDetails.Quantity,
+    OrderDetails.UnitPrice,
+    Orders.OrderDate
+  FROM
+    Orders
+    JOIN Customers ON Orders.CustomerID = Customers.CustomerID
+    JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
+    JOIN Products ON OrderDetails.ProductID = Products.ProductID
+  WHERE
+    Orders.OrderDate >= '2023-01-01'
+    AND Customers.Country = 'USA'
+),
+Revenue_CTE AS (
+  SELECT
+    ProductID,
+    SUM(Quantity * UnitPrice) AS TotalRevenue
+  FROM
+    Sales_CTE
+  GROUP BY
+    ProductID
+)
+SELECT
+  ProductName,
+  TotalRevenue
+FROM
+  Revenue_CTE
+WHERE
+  TotalRevenue > 10000;

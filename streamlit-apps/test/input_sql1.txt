@@ -1,0 +1,101 @@
+WITH CustomerSegmentation AS (
+  SELECT
+    CustomerID,
+    CASE
+      WHEN TotalPurchases > 5000 THEN 'High Value'
+      WHEN TotalPurchases > 1000 THEN 'Medium Value'
+      ELSE 'Low Value'
+    END AS Segment
+  FROM (
+    SELECT
+      Customers.CustomerID,
+      SUM(Orders.TotalAmount) AS TotalPurchases
+    FROM
+      Customers
+      LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+    GROUP BY
+      Customers.CustomerID
+  ) AS CustomerPurchases
+),
+TopProducts AS (
+  SELECT
+    ProductID,
+    ProductName,
+    CASE
+      WHEN AVG(Quantity) > 50 THEN 'High Demand'
+      WHEN AVG(Quantity) > 20 THEN 'Medium Demand'
+      ELSE 'Low Demand'
+    END AS DemandLevel
+  FROM
+    OrderDetails
+    JOIN Products ON OrderDetails.ProductID = Products.ProductID
+  GROUP BY
+    ProductID, ProductName
+),
+CombinedResults AS (
+  SELECT
+    Customers.CustomerID,
+    Customers.CustomerName,
+    CustomerSegmentation.Segment,
+    Orders.OrderID,
+    Orders.OrderDate,
+    TopProducts.ProductID,
+    TopProducts.ProductName,
+    TopProducts.DemandLevel
+  FROM
+    Customers
+    LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+    LEFT JOIN CustomerSegmentation ON Customers.CustomerID = CustomerSegmentation.CustomerID
+    LEFT JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
+    LEFT JOIN TopProducts ON OrderDetails.ProductID = TopProducts.ProductID
+)
+SELECT
+  CustomerID,
+  CustomerName,
+  Segment,
+  OrderID,
+  OrderDate,
+  ProductID,
+  ProductName,
+  DemandLevel
+FROM
+  CombinedResults
+WHERE
+  Segment = 'High Value'
+  AND DemandLevel = 'High Demand'
+ORDER BY
+  OrderDate DESC;
+
+WITH Sales_CTE AS (
+  SELECT
+    Orders.OrderID,
+    Customers.CustomerName,
+    Products.ProductName,
+    OrderDetails.Quantity,
+    OrderDetails.UnitPrice,
+    Orders.OrderDate
+  FROM
+    Orders
+    JOIN Customers ON Orders.CustomerID = Customers.CustomerID
+    JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
+    JOIN Products ON OrderDetails.ProductID = Products.ProductID
+  WHERE
+    Orders.OrderDate >= '2023-01-01'
+    AND Customers.Country = 'USA'
+),
+Revenue_CTE AS (
+  SELECT
+    ProductID,
+    SUM(Quantity * UnitPrice) AS TotalRevenue
+  FROM
+    Sales_CTE
+  GROUP BY
+    ProductID
+)
+SELECT
+  ProductName,
+  TotalRevenue
+FROM
+  Revenue_CTE
+WHERE
+  TotalRevenue > 10000;
