@@ -1,0 +1,16 @@
+https://zblobarchive.blob.core.windows.net/samples/call_billing_payment_chat_sample1.wav
+https://zblobarchive.blob.core.windows.net/samples/call_cancellation_chat_sample1.wav
+https://zblobarchive.blob.core.windows.net/samples/call_complaint_chat_sample2.wav
+https://zblobarchive.blob.core.windows.net/samples/call_new_sales_chat_sample1.wav
+
+
+https://zblobarchive.blob.core.windows.net/samples/cc_1. New Feature Request.wav
+https://zblobarchive.blob.core.windows.net/samples/cc_2. Innovative Service Suggestions.wav
+https://zblobarchive.blob.core.windows.net/samples/cc_4. Competitor Analysis and Comparison.wav
+https://zblobarchive.blob.core.windows.net/samples/cc_8. Pricing and Packaging Suggestions.wav
+https://zblobarchive.blob.core.windows.net/samples/cc_6. Market Gap Identification.wav
+https://zblobarchive.blob.core.windows.net/samples/cc_a1__upselling_cross_selling_chat_sample3_out.wav
+https://zblobarchive.blob.core.windows.net/samples/cc_a1__upselling_cross_selling_chat_sample4_out.wav
+https://zblobarchive.blob.core.windows.net/samples/cc_a1__upselling_cross_selling_chat_sample5_out.wav
+https://zblobarchive.blob.core.windows.net/samples/cc_9Monitoring Legal Discussions.wav
+https://zblobarchive.blob.core.windows.net/samples/cc_9training_needs.wav
