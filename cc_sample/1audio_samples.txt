@@ -12,5 +12,9 @@ https://zblobarchive.blob.core.windows.net/samples/cc_6. Market Gap Identificati
 https://zblobarchive.blob.core.windows.net/samples/cc_a1__upselling_cross_selling_chat_sample3_out.wav
 https://zblobarchive.blob.core.windows.net/samples/cc_a1__upselling_cross_selling_chat_sample4_out.wav
 https://zblobarchive.blob.core.windows.net/samples/cc_a1__upselling_cross_selling_chat_sample5_out.wav
+
+https://zblobarchive.blob.core.windows.net/samples/CX_Customer Satisfaction Analysis.wav
+https://zblobarchive.blob.core.windows.net/samples/CX_Customer Loyalty Indicators.wav
+
 https://zblobarchive.blob.core.windows.net/samples/cc_9Monitoring Legal Discussions.wav
 https://zblobarchive.blob.core.windows.net/samples/cc_9training_needs.wav
