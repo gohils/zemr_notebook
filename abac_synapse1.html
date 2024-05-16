@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced ABAC Framework in Azure Synapse Analytics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        h2, h3 {
+            color: #2E86C1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Solution Proposal: Implementing ABAC Framework in Azure Synapse Analytics</h1>
+    <h2>1. Introduction:</h2>
+    <p>In today's data-driven landscape, ensuring robust security measures and regulatory compliance is imperative for organizations. The Attribute-Based Access Control (ABAC) framework provides a modern approach to access control, allowing organizations to dynamically enforce access policies based on a wide range of attributes associated with users, resources, and environmental factors. This proposal outlines the development and implementation of an ABAC framework within Azure Synapse Analytics to address the evolving security challenges and regulatory requirements faced by businesses.</p>
+
+    <h2>2. Business Need:</h2>
+    <p>The implementation of ABAC in Azure Synapse Analytics addresses several critical business needs:</p>
+    <ul>
+        <li>Data Security: Protect sensitive information from unauthorized access and data breaches.</li>
+        <li>Regulatory Compliance: Ensure compliance with data privacy regulations such as GDPR, CCPA, and HIPAA, as well as industry-specific standards.</li>
+        <li>Risk Mitigation: Reduce the risk of insider threats, data leaks, and unauthorized data access.</li>
+        <li>Operational Efficiency: Streamline access management processes and improve governance over data assets.</li>
+    </ul>
+
+    <h2>3. Proposed Solution:</h2>
+    <p>The ABAC framework in Azure Synapse Analytics will comprise the following key components:</p>
+    <ul>
+        <li>Attribute Management</li>
+        <li>Policy Definition</li>
+        <li>Policy Enforcement</li>
+        <li>Auditing and Monitoring</li>
+    </ul>
+
+    <h2>4. Functionality:</h2>
+    <p>The ABAC framework will offer the following functionalities:</p>
+    <ul>
+        <li>Fine-Grained Access Control</li>
+        <li>Dynamic Policy Evaluation</li>
+        <li>Compliance Reporting</li>
+        <li>Scalability and Performance</li>
+    </ul>
+
+    <h2>5. Process Flow:</h2>
+    <p>The process flow for access control in the ABAC framework is as follows:</p>
+    <ol>
+
+<li><strong> Attribute Definition</strong>: Define attributes such as Department, Role, and Sensitivity_Level.</li>
+<li><strong> User Attribute Assignment</strong>: Assign attributes to users based on their roles and responsibilities.</li>
+<li><strong> Resource Attribute Assignment</strong>: Associate rows of the customer database with attributes based on sensitivity levels.</li>
+<li><strong> Policy Generation</strong>: Execute the policy_generation_row_level stored procedure to populate the Row-Level Policies Table with access policies dynamically.</li>
+<li><strong> Policy Enforcement</strong>: Execute the policy_enforcement_row_level stored procedure to enforce row-level access policies by dynamically filtering rows for each user based on their attributes.</li>
+    </ol>
+
+    <h2>6. Benefits:</h2>
+    <p>The implementation of the ABAC framework in Azure Synapse Analytics offers several benefits:</p>
+    <ul>
+        <li>Enhanced Data Security</li>
+        <li>Regulatory Compliance</li>
+        <li>Operational Efficiency</li>
+        <li>Risk Mitigation</li>
+    </ul>
+
+    <h2>7. Conclusion:</h2>
+    <p>Implementing an ABAC framework in Azure Synapse Analytics is essential for addressing the growing challenges of data security, regulatory compliance, and access management. By providing fine-grained access control based on user attributes and resource properties, the ABAC framework will enable organizations to safeguard sensitive information, mitigate risks, and maintain regulatory compliance in today's rapidly evolving data landscape.</p>
+
+    <h2>Technical Design Document: Enhanced Attribute-Based Access Control (ABAC) Framework in Azure Synapse Analytics</h2>
+    <h3>1. Introduction</h3>
+    <p>This technical design document outlines the implementation of an enhanced Attribute-Based Access Control (ABAC) framework in Azure Synapse Analytics. This framework enables fine-grained access control at the table, column, and row levels based on attributes associated with user groups and resources. It also includes auditing capabilities to track active policies.</p>
+
+    <h3>2. Framework Components</h3>
+    <h4>2.1 Database Tables</h4>
+
+    <h5>1. Attributes Table</h5>
+    <p><strong>Purpose</strong>: Stores attribute definitions.</p>
+    <pre><code>CREATE TABLE Attributes (
+    Attribute_ID INT PRIMARY KEY,
+    Attribute_Name NVARCHAR(50)
+);</code></pre>
+    <table>
+        <thead>
+            <tr>
+                <th>Attribute_ID</th>
+                <th>Attribute_Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Department</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Role</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Sensitivity_Level</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5>2. Users Table</h5>
+    <p><strong>Purpose</strong>: Stores user information.</p>
+    <pre><code>CREATE TABLE Users (
+    User_ID INT PRIMARY KEY,
+    User_Name NVARCHAR(50)
+);</code></pre>
+    <table>
+        <thead>
+            <tr>
+                <th>User_ID</th>
+                <th>User_Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>John</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Sarah</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Alex</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5>3. User_Groups Table</h5>
+    <p><strong>Purpose</strong>: Stores user group information.</p>
+    <pre><code>CREATE TABLE User_Groups (
+    Group_ID INT PRIMARY KEY,
+    Group_Name NVARCHAR(50)
+);</code></pre>
+    <table>
+        <thead>
+            <tr>
+                <th>Group_ID</th>
+                <th>Group_Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Managers</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Sales</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Marketing</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5>4. User_Group_Membership Table</h5>
+    <p><strong>Purpose</strong>: Associates users with groups.</p>
+    <pre><code>CREATE TABLE User_Group_Membership (
+    Membership_ID INT PRIMARY KEY,
+    User_ID INT,
+    Group_ID INT,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Group_ID) REFERENCES User_Groups(Group_ID)
+);</code></pre>
+    <table>
+        <thead>
+            <tr>
+                <th>Membership_ID</th>
+                <th>User_ID</th>
+                <th>Group_ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>3</td>
+                <td>1</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5>5. User_Group_Attributes Table</h5>
+    <p><strong>Purpose</strong>: Associates user groups with attributes.</p>
+    <pre><code>CREATE TABLE User_Group_Attributes (
+    Group_Attribute_ID INT PRIMARY KEY,
+    Group_ID INT,
+    Attribute_ID INT,
+    Attribute_Value NVARCHAR(50),
+    FOREIGN KEY (Group_ID) REFERENCES User_Groups(Group_ID),
+    FOREIGN KEY (Attribute_ID) REFERENCES Attributes(Attribute_ID)
+);</code></pre>
+    <table>
+        <thead>
+            <tr>
+                <th>Group_Attribute_ID</th>
+                <th>Group_ID</th>
+                <th>Attribute_ID</th>
+                <th>Attribute_Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>Sales</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>1</td>
+                <td>2</td>
+                <td>Manager</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>1</td>
+                <td>3</td>
+                <td>Confidential</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>2</td>
+                <td>1</td>
+                <td>Sales</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>3</td>
+                <td>1</td>
+                <td>Marketing</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5>6. Resources Table</h5>
+    <p><strong>Purpose</strong>: Stores information about tables and columns.</p>
+    <pre><code>CREATE TABLE Resources (
+    Resource_ID INT PRIMARY KEY,
+    Resource_Name NVARCHAR(50),
+    Resource_Type NVARCHAR(50)
+);</code></pre>
+    <table>
+        <thead>
+            <tr>
+                <th>Resource_ID</th>
+                <th>Resource_Name</th>
+                <th>Resource_Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>SalesData</td>
+                <td>Table</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>MarketingData</td>
+                <td>Table</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>FinanceData</td>
+                <td>Table</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>SalesData.Amount</td>
+                <td>Column</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>SalesData.CustomerName</td>
+                <td>Column</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>MarketingData.CampaignID</td>
+                <td>Column</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>MarketingData.CampaignName</td>
+                <td>Column</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>FinanceData.TransactionID</td>
+                <td>Column</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>FinanceData.TransactionAmount</td>
+                <td>Column</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5>7. Resource_Attributes Table</h5>
+    <p><strong>Purpose</strong>: Associates resources with attributes.</p>
+    <pre><code>CREATE TABLE Resource_Attributes (
+    Resource_Attribute_ID INT PRIMARY KEY,
+    Resource_ID INT,
+    Attribute_ID INT,
+    FOREIGN KEY (Resource_ID) REFERENCES Resources(Resource_ID),
+    FOREIGN KEY (Attribute_ID) REFERENCES Attributes(Attribute_ID)
+);</code></pre>
+    <table>
+        <thead>
+            <tr>
+                <th>Resource_Attribute_ID</th>
+                <th>Resource_ID</th>
+                <th>Attribute_ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>3</td>
+                <td>3</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5>8. Column_Permissions Table</h5>
+    <p><strong>Purpose</strong>: Stores column-level access permissions and security policies.</p>
+    <pre><code>CREATE TABLE Column_Permissions (
+    Permission_ID INT PRIMARY KEY,
+    Group_ID INT,
+    Resource_ID INT,
+    ObjectType VARCHAR(50),
+    ObjectName NVARCHAR(50),
+    ColumnName NVARCHAR(50),
+    PermissionType NVARCHAR(50),
+    SQLStatement NVARCHAR(MAX),
+    Created_At DATETIME DEFAULT GETDATE(),
+    Updated_At DATETIME DEFAULT GETDATE()
+);</code></pre>
+<h3>Table Schema:</h3>
+<table>
+  <tr>
+    <th>Column Name</th>
+    <th>Data Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Permission_ID</td>
+    <td>INT</td>
+    <td>Unique identifier for each permission entry.</td>
+  </tr>
+  <tr>
+    <td>Group_ID</td>
+    <td>INT</td>
+    <td>Identifier for the user group or principal associated with the permission.</td>
+  </tr>
+  <tr>
+    <td>Resource_ID</td>
+    <td>INT</td>
+    <td>Identifier for the resource (table or column) to which the permission applies.</td>
+  </tr>
+  <tr>
+    <td>ObjectType</td>
+    <td>VARCHAR(50)</td>
+    <td>Type of the object (e.g., 'Table' or 'Column').</td>
+  </tr>
+  <tr>
+    <td>ObjectName</td>
+    <td>NVARCHAR(50)</td>
+    <td>Name of the object (e.g., table name or column name).</td>
+  </tr>
+  <tr>
+    <td>ColumnName</td>
+    <td>NVARCHAR(50)</td>
+    <td>Name of the column.</td>
+  </tr>
+  <tr>
+    <td>PermissionType</td>
+    <td>NVARCHAR(50)</td>
+    <td>Type of permission (e.g., 'SELECT', 'INSERT', 'UPDATE', 'DELETE').</td>
+  </tr>
+  <tr>
+    <td>SQLStatement</td>
+    <td>NVARCHAR(MAX)</td>
+    <td>SQL statement representing the permission grant.</td>
+  </tr>
+  <tr>
+    <td>Created_At</td>
+    <td>DATETIME</td>
+    <td>Timestamp indicating when the permission entry was created.</td>
+  </tr>
+  <tr>
+    <td>Updated_At</td>
+    <td>DATETIME</td>
+    <td>Timestamp indicating when the permission entry was last updated.</td>
+  </tr>
+</table>
+
+<h3>Explanation:</h3>
+<p>The <em>column_permission</em> table stores permissions related to accessing columns within tables. Each entry in this table represents a specific permission granted to a user group or principal for a particular column in a resource (table or column).</p>
+<ul>
+  <li><strong>Permission_ID:</strong> Unique identifier for each permission entry.</li>
+  <li><strong>Group_ID:</strong> Identifier for the user group or principal associated with the permission.</li>
+  <li><strong>Resource_ID:</strong> Identifier for the resource (table or column) to which the permission applies.</li>
+  <li><strong>ObjectType:</strong> Type of the object, whether it's a table or a column.</li>
+  <li><strong>ObjectName:</strong> Name of the object, either the table name or the column name.</li>
+  <li><strong>ColumnName:</strong> Name of the column (relevant only for column-level permissions).</li>
+  <li><strong>PermissionType:</strong> Type of permission granted (e.g., SELECT, INSERT, UPDATE, DELETE).</li>
+  <li><strong>SQLStatement:</strong> SQL statement representing the permission grant, typically used for programmatic access control.</li>
+  <li><strong>Created_At:</strong> Timestamp indicating when the permission entry was created.</li>
+  <li><strong>Updated_At:</strong> Timestamp indicating when the permission entry was last updated.</li>
+</ul>
+<table>
+  <thead>
+    <tr>
+      <th>Permission_ID</th>
+      <th>Group_ID</th>
+      <th>Resource_ID</th>
+      <th>ObjectType</th>
+      <th>ObjectName</th>
+      <th>ColumnName</th>
+      <th>PermissionType</th>
+      <th>SQLStatement</th>
+      <th>Created_At</th>
+      <th>Updated_At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Table</td>
+      <td>SalesData</td>
+      <td>(All Columns)</td>
+      <td>SELECT</td>
+      <td>GRANT SELECT ON SalesData TO group_1</td>
+      <td>2024-05-15 12:00:00</td>
+      <td>2024-05-15 12:00:00</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>Table</td>
+      <td>MarketingData</td>
+      <td>(All Columns)</td>
+      <td>SELECT</td>
+      <td>GRANT SELECT ON MarketingData TO group_2</td>
+      <td>2024-05-15 12:00:00</td>
+      <td>2024-05-15 12:00:00</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>3</td>
+      <td>3</td>
+      <td>Table</td>
+      <td>FinanceData</td>
+      <td>(All Columns)</td>
+      <td>SELECT</td>
+      <td>GRANT SELECT ON FinanceData TO group_3</td>
+      <td>2024-05-15 12:00:00</td>
+      <td>2024-05-15 12:00:00</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Column</td>
+      <td>SalesData</td>
+      <td>CustomerID</td>
+      <td>SELECT</td>
+      <td>GRANT SELECT (CustomerID) ON SalesData TO group_1</td>
+      <td>2024-05-15 12:00:00</td>
+      <td>2024-05-15 12:00:00</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Column</td>
+      <td>SalesData</td>
+      <td>OrderDate</td>
+      <td>SELECT</td>
+      <td>GRANT SELECT (OrderDate) ON SalesData TO group_1</td>
+      <td>2024-05-15 12:00:00</td>
+      <td>2024-05-15 12:00:00</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2</td>
+      <td>2</td>
+      <td>Column</td>
+      <td>MarketingData</td>
+      <td>CampaignID</td>
+      <td>SELECT</td>
+      <td>GRANT SELECT (CampaignID) ON MarketingData TO group_2</td>
+      <td>2024-05-15 12:00:00</td>
+      <td>2024-05-15 12:00:00</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2</td>
+      <td>2</td>
+      <td>Column</td>
+      <td>MarketingData</td>
+      <td>CampaignName</td>
+      <td>SELECT</td>
+      <td>GRANT SELECT (CampaignName) ON MarketingData TO group_2</td>
+      <td>2024-05-15 12:00:00</td>
+      <td>2024-05-15 12:00:00</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>3</td>
+      <td>3</td>
+      <td>Column</td>
+      <td>FinanceData</td>
+      <td>TransactionID</td>
+      <td>SELECT</td>
+      <td>GRANT SELECT (TransactionID) ON FinanceData TO group_3</td>
+      <td>2024-05-15 12:00:00</td>
+      <td>2024-05-15 12:00:00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h5>9. Row_Permissions Table</h5>
+    <p><strong>Purpose</strong>: Stores row-level access permissions and security policies.</p>
+    <pre><code>CREATE TABLE Row_Permissions (
+    Permission_ID INT PRIMARY KEY,
+    Group_ID INT,
+    Resource_ID INT,
+    Permission_Type NVARCHAR(50),
+    Filter_Predicate NVARCHAR(MAX),
+    Security_Policy NVARCHAR(100),
+    Created_At DATETIME DEFAULT GETDATE(),
+    Updated_At DATETIME DEFAULT GETDATE()
+);</code></pre>
+<table border="1">
+  <tr>
+    <th>Permission_ID</th>
+    <th>Group_ID</th>
+    <th>Resource_ID</th>
+    <th>Permission_Type</th>
+    <th>Filter_Predicate</th>
+    <th>Security_Policy</th>
+    <th>Security_Policy_Reference</th>
+                <th>Created_At</th>
+                <th>Updated_At</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>3</td>
+    <td>SELECT</td>
+    <td>USER_NAME() = 'Manager'</td>
+    <td>FinanceAccess</td>
+    <td>Policy_Ref_123</td>
+                <td>2024-05-15 12:00:00</td>
+                <td>2024-05-15 12:00:00</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>2</td>
+    <td>SELECT</td>
+    <td>Region = 'North' AND (Role = 'Manager' OR Role = 'Executive')</td>
+    <td>MarketingAccess</td>
+    <td>Policy_Ref_456</td>
+                <td>2024-05-15 12:00:00</td>
+                <td>2024-05-15 12:00:00</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>3</td>
+    <td>1</td>
+    <td>SELECT</td>
+    <td>Region = 'North' AND ProductGroup = 'X' AND Role = 'Analyst'</td>
+    <td>SalesAccess</td>
+    <td>Policy_Ref_789</td>
+    <td>2024-05-15 12:00:00</td>
+    <td>2024-05-15 12:00:00</td>
+  </tr>
+</table>
+<strong>Explanation</strong>:
+
+<li><strong>Permission_ID</strong>: Unique identifier for each permission entry.
+</li><li><strong>Group_ID</strong>: The ID of the user group to whom the permission is granted.
+</li><li><strong>Resource_ID</strong>: The ID of the resource (table) to which the permission applies.
+</li><li><strong>Permission_Type</strong>: The type of permission granted (e.g., SELECT).
+</li><li><strong>Filter_Predicate</strong>: The filter predicate applied to the resource for row-level access control. It defines the condition that must be satisfied for a row to be accessible to the user. In this scenario, it checks if the sales representative matches the user or if the user is a manager.
+</li><li><strong>Security_Policy</strong>: The security policy associated with the permission entry, which is used to enforce the access control policy defined by the filter predicate.</li>
+
+</br>
+<strong>Enhanced Row_Permissions with lookup Table:</strong>
+<table border="1">
+
+  <tr>
+    <th>Permission_ID</th>
+    <th>User_ID</th>
+    <th>Resource_ID</th>
+    <th>Permission_Type</th>
+    <th>Lookup_Table_Name</th>
+    <th>Filter_Predicate</th>
+    <th>Security_Policy</th>
+    <th>Security_Policy_Reference</th>
+                <th>Created_At</th>
+                <th>Updated_At</th>  </tr>
+  <tr>
+    <td>1</td>
+    <td>1</td>
+    <td>1</td>
+    <td>SELECT</td>
+    <td>Lk_Salesman_Product</td>
+    <td>Product = 'Valve' AND (Salesrep = 'Sales1' OR USER_NAME() = 'Manager')</td>
+    <td>SalesFilter</td>
+    <td>Policy_Ref_781</td>
+    <td>2024-05-15 12:00:00</td>
+    <td>2024-05-15 12:00:00</td>  </tr>
+  <tr>
+    <td>2</td>
+    <td>2</td>
+    <td>2</td>
+    <td>SELECT</td>
+    <td>Lk_Salesman_Product</td>
+    <td>Product = 'Wheel' AND (Salesrep = 'Sales2' OR USER_NAME() = 'Manager')</td>
+    <td>SalesFilter</td>
+    <td>Policy_Ref_782</td>
+    <td>2024-05-15 12:00:00</td>
+    <td>2024-05-15 12:00:00</td>  </tr>
+  <tr>
+    <td>3</td>
+    <td>3</td>
+    <td>3</td>
+    <td>SELECT</td>
+    <td>NULL</td>
+    <td>USER_NAME() = 'Manager'</td>
+    <td>SalesFilter</td>
+    <td>Policy_Ref_783</td>
+    <td>2024-05-15 12:00:00</td>
+    <td>2024-05-15 12:00:00</td>  </tr>
+</table>
+
+<p>In this enhanced schema:</p>
+<ul>
+  <li><strong>Lookup_Table_Name:</strong> Specifies the name of the lookup table used for the security predicate. For rows where the security predicate is not based on a lookup table, this field can be NULL.</li>
+  <li><strong>Filter_Predicate:</strong> Contains the security predicate, which may include conditions based on the lookup table's columns as well as other attributes. In the example, it combines conditions from the lookup table and user authentication.</li>
+  <li><strong>Security_Policy:</strong> Specifies the security policy associated with the permission entry.</li>
+</ul>
+
+    <h5>10. Policy_Audit Table</h5>
+    <p><strong>Purpose</strong>: Audits policy enforcement actions.</p>
+    <pre><code>CREATE TABLE Policy_Audit (
+    Audit_ID INT PRIMARY KEY,
+    Permission_ID INT,
+    Policy_Type NVARCHAR(50),
+    Action NVARCHAR(50),
+    Timestamp DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (Permission_ID) REFERENCES Column_Permissions(Permission_ID)
+);</code></pre>
+    <table>
+        <thead>
+            <tr>
+                <th>Audit_ID</th>
+                <th>Permission_ID</th>
+                <th>Policy_Type</th>
+                <th>Action</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>Column</td>
+                <td>Applied</td>
+                <td>2024-05-15 12:30:00</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2</td>
+                <td>Row</td>
+                <td>Applied</td>
+                <td>2024-05-15 12:35:00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>2 Stored Procedures - Policy Generation and Policy Enforcement</h4>
+
+    <h5>2.1. Column-Level Policy Generation</h5>
+    <p><strong>Purpose</strong>: Populates the <code>Column_Permissions</code> table based on user group and resource attributes.</p>
+    <pre><code>CREATE PROCEDURE column_permission_policy_generation AS
+BEGIN
+    -- Populate the Column_Permissions table with access policies
+    -- based on user group and resource attributes
+    INSERT INTO Column_Permissions (Group_ID, Resource_ID, Permission_Type, Filter_Predicate, Security_Policy)
+    SELECT 
+        uga.Group_ID,
+        ra.Resource_ID,
+        'SELECT',
+        'Department = ''' + uga.Attribute_Value + '''',
+        'ColumnFilter'
+    FROM 
+        User_Group_Attributes uga
+    JOIN 
+        Resource_Attributes ra ON uga.Attribute_ID = ra.Attribute_ID
+    WHERE 
+        ra.Resource_Type = 'Column';
+END;</code></pre>
+
+    <h5>2.2 Row-Level Policy Generation</h5>
+    <p><strong>Purpose</strong>: Populates the <code>Row_Permissions</code> table based on user group and resource attributes.</p>
+    <pre><code>CREATE PROCEDURE row_permission_policy_generation AS
+BEGIN
+    -- Populate the Row_Permissions table with access policies
+    -- based on user group and resource attributes
+    INSERT INTO Row_Permissions (Group_ID, Resource_ID, Permission_Type, Filter_Predicate, Security_Policy)
+    SELECT 
+        uga.Group_ID,
+        ra.Resource_ID,
+        'SELECT',
+        'Department = ''' + uga.Attribute_Value + '''',
+        'RowFilter'
+    FROM 
+        User_Group_Attributes uga
+    JOIN 
+        Resource_Attributes ra ON uga.Attribute_ID = ra.Attribute_ID
+    WHERE 
+        ra.Resource_Type = 'Table';
+END;</code></pre>
+
+    <h5>2.3. Column-Level Policy Enforcement</h5>
+    <p><strong>Purpose</strong>: Enforces column-level access policies by dynamically generating predicate functions and security policies.</p>
+    <pre><code>CREATE PROCEDURE column_permission_policy_enforcement AS
+BEGIN
+    DECLARE @Group_ID INT, @Resource_ID INT, @Permission_Type NVARCHAR(50);
+    DECLARE @Filter_Predicate NVARCHAR(MAX), @Security_Policy NVARCHAR(100);
+    DECLARE cur CURSOR FOR 
+    SELECT Group_ID, Resource_ID, Permission_Type, Filter_Predicate, Security_Policy 
+    FROM Column_Permissions;
+
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @Group_ID, @Resource_ID, @Permission_Type, @Filter_Predicate, @Security_Policy;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Apply the security policy
+        EXEC sp_addrolemember @Filter_Predicate, @Security_Policy;
+
+        -- Audit the policy enforcement
+        INSERT INTO Policy_Audit (Permission_ID, Policy_Type, Action)
+        VALUES (@Group_ID, 'Column', 'Applied');
+
+        FETCH NEXT FROM cur INTO @Group_ID, @Resource_ID, @Permission_Type, @Filter_Predicate, @Security_Policy;
+    END;
+
+    CLOSE cur;
+    DEALLOCATE cur;
+END;</code></pre>
+
+    <h5>2.4. Row-Level Policy Enforcement</h5>
+    <p><strong>Purpose</strong>: Enforces row-level access policies by dynamically generating predicate functions and security policies.</p>
+    <pre><code>CREATE PROCEDURE row_permission_policy_enforcement AS
+BEGIN
+    DECLARE @Group_ID INT, @Resource_ID INT, @Permission_Type NVARCHAR(50);
+    DECLARE @Filter_Predicate NVARCHAR
+(MAX), @Security_Policy NVARCHAR(100);
+    DECLARE cur CURSOR FOR 
+    SELECT Group_ID, Resource_ID, Permission_Type, Filter_Predicate, Security_Policy 
+    FROM Row_Permissions;
+
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @Group_ID, @Resource_ID, @Permission_Type, @Filter_Predicate, @Security_Policy;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Apply the security policy
+        EXEC sp_addrolemember @Filter_Predicate, @Security_Policy;
+
+        -- Audit the policy enforcement
+        INSERT INTO Policy_Audit (Permission_ID, Policy_Type, Action)
+        VALUES (@Group_ID, 'Row', 'Applied');
+
+        FETCH NEXT FROM cur INTO @Group_ID, @Resource_ID, @Permission_Type, @Filter_Predicate, @Security_Policy;
+    END;
+
+    CLOSE cur;
+    DEALLOCATE cur;
+END;</code></pre>
+
+<h2>Detailed Database Design</h2>
+<h2>1 Database Design Tables</h2>
+
+<h2>1.1 Attributes Table</h2>
+<p><strong>Purpose:</strong> Stores attribute definitions.</p>
+<p><strong>Columns:</strong></p>
+<ul>
+  <li><strong>Attribute_ID (Primary Key):</strong> Unique identifier for the attribute.</li>
+  <li><strong>Attribute_Name:</strong> Name of the attribute.</li>
+</ul>
+
+<h2>1.2. Users Table</h2>
+<p><strong>Purpose:</strong> Stores user information.</p>
+<p><strong>Columns:</strong></p>
+<ul>
+  <li><strong>User_ID (Primary Key):</strong> Unique identifier for the user.</li>
+  <li><strong>User_Name:</strong> Name of the user.</li>
+</ul>
+
+<h2>1.3. User_Groups Table</h2>
+<p><strong>Purpose:</strong> Stores user group information.</p>
+<p><strong>Columns:</strong></p>
+<ul>
+  <li><strong>Group_ID (Primary Key):</strong> Unique identifier for the user group.</li>
+  <li><strong>Group_Name:</strong> Name of the user group.</li>
+  <li><strong>Parent_Group_ID (Foreign Key):</strong> Reference to the parent group ID for hierarchical access control.</li>
+</ul>
+
+<h2>1.4. User_Group_Membership Table</h2>
+<p><strong>Purpose:</strong> Associates users with groups.</p>
+<p><strong>Columns:</strong></p>
+<ul>
+  <li><strong>Membership_ID (Primary Key):</strong> Unique identifier for the membership.</li>
+  <li><strong>User_ID (Foreign Key):</strong> Reference to the user.</li>
+  <li><strong>Group_ID (Foreign Key):</strong> Reference to the user group.</li>
+</ul>
+
+<h2>1.5. User_Group_Attributes Table</h2>
+<p><strong>Purpose:</strong> Associates user groups with attributes.</p>
+<p><strong>Columns:</strong></p>
+<ul>
+  <li><strong>Group_Attribute_ID (Primary Key):</strong> Unique identifier for the group-attribute association.</li>
+  <li><strong>Group_ID (Foreign Key):</strong> Reference to the user group.</li>
+  <li><strong>Attribute_ID (Foreign Key):</strong> Reference to the attribute.</li>
+  <li><strong>Attribute_Value:</strong> Value of the attribute for the user group.</li>
+</ul>
+
+<h2>1.6. Resources Table</h2>
+<p><strong>Purpose:</strong> Stores information about tables and columns.</p>
+<p><strong>Columns:</strong></p>
+<ul>
+  <li><strong>Resource_ID (Primary Key):</strong> Unique identifier for the resource.</li>
+  <li><strong>Resource_Name:</strong> Name of the resource.</li>
+  <li><strong>Resource_Type:</strong> Type of the resource (e.g., Table, Column).</li>
+</ul>
+
+<h2>1.7. Resource_Attributes Table</h2>
+<p><strong>Purpose:</strong> Associates resources with attributes.</p>
+<p><strong>Columns:</strong></p>
+<ul>
+  <li><strong>Resource_Attribute_ID (Primary Key):</strong> Unique identifier for the resource-attribute association.</li>
+  <li><strong>Resource_ID (Foreign Key):</strong> Reference to the resource.</li>
+  <li><strong>Attribute_ID (Foreign Key):</strong> Reference to the attribute.</li>
+</ul>
+
+<h2>1.8. Column_Permissions Table</h2>
+<p><strong>Purpose:</strong> Stores column-level access permissions and security policies.</p>
+<p><strong>Columns:</strong></p>
+<ul>
+  <li><strong>Permission_ID (Primary Key):</strong> Unique identifier for the permission.</li>
+  <li><strong>Group_ID (Foreign Key):</strong> Reference to the user group.</li>
+  <li><strong>Resource_ID (Foreign Key):</strong> Reference to the resource.</li>
+  <li><strong>ObjectType:</strong> Type of the object (e.g., 'Table' or 'Column').</li>
+  <li><strong>ObjectName:</strong> Name of the object (e.g., table name or column name).</li>
+  <li><strong>ColumnName:</strong> Name of the column.</li>
+  <li><strong>PermissionType:</strong> Type of permission (e.g., 'SELECT', 'INSERT', 'UPDATE', 'DELETE').</li>
+  <li><strong>SQLStatement:</strong> SQL statement representing the permission grant.</li>
+  <li><strong>Created_At:</strong> Timestamp indicating when the permission entry was created.</li>
+  <li><strong>Updated_At:</strong> Timestamp indicating when the permission entry was last updated.</li>
+</ul>
+
+<h2>1.9. Row_Permissions Table</h2>
+<p><strong>Purpose:</strong> Stores row-level access permissions and security policies.</p>
+<p><strong>Columns:</strong></p>
+<ul>
+  <li><strong>Permission_ID (Primary Key):</strong> Unique identifier for the permission.</li>
+  <li><strong>Group_ID (Foreign Key):</strong> Reference to the user group.</li>
+  <li><strong>Resource_ID (Foreign Key):</strong> Reference to the resource.</li>
+  <li><strong>Permission_Type:</strong> Type of permission (e.g., SELECT).</li>
+  <li><strong>Filter_Predicate:</strong> Predicate for filtering data based on attributes.</li>
+  <li><strong>Security_Policy:</strong> Security policy for enforcing access control.</li>
+  <li><strong>Created_At:</strong> Timestamp indicating when the permission entry was created.</li>
+  <li><strong>Updated_At:</strong> Timestamp indicating when the permission entry was last updated.</li>
+</ul>
+
+<h2>1.10. Policy_Audit Table</h2>
+<p><strong>Purpose:</strong> Audits policy enforcement actions.</p>
+<p><strong>Columns:</strong></p>
+<ul>
+  <li><strong>Audit_ID (Primary Key):</strong> Unique identifier for the audit entry.</li>
+  <li><strong>Permission_ID (Foreign Key):</strong> Reference to the permission.</li>
+  <li><strong>Policy_Type:</strong> Type of policy (e.g., Column, Row).</li>
+  <li><strong>Action:</strong> Action taken (e.g., Applied).</li>
+  <li><strong>Timestamp:</strong> Timestamp of the action.</li>
+</ul>
+
+
+<h2>2 Database Design Stored Procedures</h2>
+
+<h4>1. Column-Level Policy Generation</h4>
+<p><strong>Purpose:</strong> Populates the <code>Column_Permissions</code> table based on user group and resource attributes.</p>
+<pre><code>CREATE PROCEDURE column_permission_policy_generation AS
+BEGIN
+    -- Populate the Column_Permissions table with access policies
+    -- based on user group and resource attributes
+    INSERT INTO Column_Permissions (Group_ID, Resource_ID, Permission_Type, Filter_Predicate, Security_Policy)
+    SELECT 
+        uga.Group_ID,
+        ra.Resource_ID,
+        'SELECT',
+        'Department = ''' + uga.Attribute_Value + '''',
+        'ColumnFilter'
+    FROM 
+        User_Group_Attributes uga
+    JOIN 
+        Resource_Attributes ra ON uga.Attribute_ID = ra.Attribute_ID
+    WHERE 
+        ra.Resource_Type = 'Column';
+END;</code></pre>
+
+<h4>2. Row-Level Policy Generation</h4>
+<p><strong>Purpose:</strong> Populates the <code>Row_Permissions</code> table based on user group and resource attributes.</p>
+<pre><code>CREATE PROCEDURE row_permission_policy_generation AS
+BEGIN
+    -- Populate the Row_Permissions table with access policies
+    -- based on user group and resource attributes
+    INSERT INTO Row_Permissions (Group_ID, Resource_ID, Permission_Type, Filter_Predicate, Security_Policy)
+    SELECT 
+        uga.Group_ID,
+        ra.Resource_ID,
+        'SELECT',
+        'Department = ''' + uga.Attribute_Value + '''',
+        'RowFilter'
+    FROM 
+        User_Group_Attributes uga
+    JOIN 
+        Resource_Attributes ra ON uga.Attribute_ID = ra.Attribute_ID
+    WHERE 
+        ra.Resource_Type = 'Table';
+END;</code></pre>
+
+<h4>3. Column-Level Policy Enforcement</h4>
+<p><strong>Purpose:</strong> Enforces column-level access policies by dynamically generating predicate functions and security policies.</p>
+<pre><code>CREATE PROCEDURE column_permission_policy_enforcement AS
+BEGIN
+    DECLARE @Group_ID INT, @Resource_ID INT, @Permission_Type NVARCHAR(50);
+    DECLARE @Filter_Predicate NVARCHAR(MAX), @Security_Policy NVARCHAR(100);
+    DECLARE cur CURSOR FOR 
+    SELECT Group_ID, Resource_ID, Permission_Type, Filter_Predicate, Security_Policy 
+    FROM Column_Permissions;
+
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @Group_ID, @Resource_ID, @Permission_Type, @Filter_Predicate, @Security_Policy;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Apply the security policy
+        EXEC sp_addrolemember @Filter_Predicate, @Security_Policy;
+
+        -- Audit the policy enforcement
+        INSERT INTO Policy_Audit (Permission_ID, Policy_Type, Action)
+        VALUES (@Group_ID, 'Column', 'Applied');
+
+        FETCH NEXT FROM cur INTO @Group_ID, @Resource_ID, @Permission_Type, @Filter_Predicate, @Security_Policy;
+    END;
+
+    CLOSE cur;
+    DEALLOCATE cur;
+END;</code></pre>
+
+<h4>4. Row-Level Policy Enforcement</h4>
+<p><strong>Purpose:</strong> Enforces row-level access policies by dynamically generating predicate functions and security policies.</p>
+<pre><code>CREATE PROCEDURE row_permission_policy_enforcement AS
+BEGIN
+    DECLARE @Group_ID INT, @Resource_ID INT, @Permission_Type NVARCHAR(50);
+    DECLARE @Filter_Predicate NVARCHAR(MAX), @Security_Policy NVARCHAR(100);
+    DECLARE cur CURSOR FOR 
+    SELECT Group_ID, Resource_ID, Permission
+</body>
+</html>
