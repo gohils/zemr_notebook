@@ -1,0 +1,131 @@
+trigger:
+- None
+
+variables:
+  - name: BRANCH_NAME
+    value: $[replace(variables['Build.SourceBranch'], 'refs/heads/', '')]  # Extracting branch name from source branch
+  - name: TAG_NAME
+    value: $[format('manifest_{0}_tag', replace(variables['BRANCH_NAME'], 'feature/', ''))]  # Generating tag name based on branch name
+
+stages:
+  - stage: Validate  # Stage for validation checks
+    displayName: 'Validation Stage'
+    jobs:
+      - job: ValidateBranchAndTag  # Job to validate branch name and tag existence
+        displayName: 'Validate Branch Name and Tag'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - script: |
+              echo "## Validating branch name"
+              echo "Branch name extracted: $(BRANCH_NAME)"
+              if [[ ! $(BRANCH_NAME) =~ ^(feature|bugfix|hotfix)/.+$ ]]; then  # Checking if branch name follows the naming convention
+                echo "Branch name $(BRANCH_NAME) does not follow the naming convention."
+                exit 1
+              else
+                echo "Branch name validation passed."
+              fi
+            displayName: 'Validate Branch Name'
+
+          - script: |
+              echo "## Checking if tag $(TAG_NAME) exists"
+              if ! git rev-parse "$(TAG_NAME)" >/dev/null 2>&1; then  # Checking if tag exists
+                echo "Tag $(TAG_NAME) does not exist."
+                exit 1
+              else
+                echo "Tag $(TAG_NAME) exists."
+              fi
+            displayName: 'Check Tag Exists'
+
+          - script: |
+              echo "## Checking git diff between $(TAG_NAME) and HEAD"
+              git fetch --all --tags
+              git diff --name-only "$(TAG_NAME)" HEAD > changed_files.txt  # Getting list of changed files between tag and HEAD
+              echo "Files changed between $(TAG_NAME) and HEAD:"
+              cat changed_files.txt
+            displayName: 'Git Diff Between Tag and HEAD'
+
+          - script: |
+              echo "## Validating changed files"
+              while read -r file; do
+                echo "Validating file: $file"              
+                if [[ "$file" != config/* && "$file" != cicd-script/* && "$file" != *.yml && "$file" != "requirements.txt" ]]; then  # Checking if changed files are within allowed paths
+                  echo "Error: Changes detected outside the config folder: $file"
+                  exit 1
+                else
+                  echo "File $file is valid."
+                fi
+              done < changed_files.txt
+            displayName: 'Check for changes outside config folder'
+
+          - script: |
+              mkdir -p $(Build.Repository.LocalPath)/changed_files
+              echo "## Copying git changes"
+              while IFS= read -r file; do
+                  # Output the filename of each changed file
+                  echo "=====collecting change file ============ $file"
+
+                  # Create the directory structure for the file
+                  mkdir -p "$(dirname "$(Build.Repository.LocalPath)/changed_files/$file")"
+                  
+                  # Copy each changed file to the staging directory
+                  cp "$file" "$(Build.Repository.LocalPath)/changed_files/$file"
+              done < changed_files.txt
+            displayName: "Copy git changes"
+
+          - bash: |
+              python3 $(Build.Repository.LocalPath)/cicd-script/validate_json_schema.py --input-change-directory=$(Build.Repository.LocalPath)/changed_files
+            displayName: "Validate JSON schemas"
+
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: $(Build.Repository.LocalPath)/changed_files
+              contents: '**/*.json'
+              targetFolder: $(Build.ArtifactStagingDirectory)/zconfig
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: '$(Build.ArtifactStagingDirectory)/zconfig'
+              artifactName: 'zconfig_changed_files'
+              publishLocation: 'Container'
+
+  - stage: Build  # Stage for building
+    displayName: 'Build Stage'
+    dependsOn: Validate
+    condition: succeeded()
+    jobs:
+      - job: BuildJob  # Job to perform the build
+        displayName: 'Build Job'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.x'
+              addToPath: true
+            displayName: 'Use Python 3.x'
+
+          # Add your build steps here
+
+  - stage: Deploy  # Stage for deployment
+    displayName: 'Deploy Stage'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: DeployJob  # Job to perform the deployment
+        displayName: 'Deploy Job'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - bash: |
+              echo "## Deploying application from directory $(pwd)"
+              # Add your deployment commands here
+              python3 cicd-script/validate_json_schema.py --input-change-directory=$(Build.ArtifactStagingDirectory)/zconfig
+            displayName: '1 deploy config jsons into databrick dbfs'
+
+          - bash: |
+              python3 $(Build.Repository.LocalPath)/cicd-script/validate_json_schema.py --input-change-directory=$(Build.ArtifactStagingDirectory)/zconfig
+            displayName: "deploy config jsons into databrick dbfs"
+          - script: |
+              echo "## Deploying application finished"
+            displayName: 'Deployment finished'
