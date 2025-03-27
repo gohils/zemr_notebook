@@ -1,0 +1,103 @@
+ These questions broadly cover the main evaluation criteria for any AI tool from an IT department’s perspective, ensuring a thorough assessment of its business impact, capabilities, security, and deployment feasibility.
+
+Here’s how they align with key decision-making areas in IT:
+
+1. Business Need & Problem-Solving
+✅ What problems or business challenges does this AI tool address?
+✅ Why should we choose this tool over others?
+✅ How does it improve efficiency, cost savings, or revenue generation?
+✅ Are there real-world case studies or customer success stories?
+
+2. Features & Capabilities
+✅ What does this AI tool do? (Core features, capabilities)
+✅ What AI/ML models, algorithms, or techniques does it support?
+✅ Does it provide automation (AutoML, no-code/low-code AI)?
+✅ How does it handle model retraining, monitoring, and lifecycle management?
+✅ Does it support explainability (XAI) and bias detection?
+
+3. Integration & Deployment
+✅ How does this AI tool integrate with existing IT infrastructure (ERP, CRM, cloud, databases)?
+✅ Does it support on-prem, cloud, or hybrid deployments?
+✅ Does it have pre-built connectors for AWS, Azure, GCP, or third-party APIs?
+✅ Is it containerized (Docker, Kubernetes) for easy scaling?
+
+4. Security & Compliance
+✅ How is data security handled?
+✅ What compliance standards does it follow (GDPR, HIPAA, SOC 2)?
+✅ Does it have role-based access control (RBAC) and authentication mechanisms?
+✅ How does it ensure data privacy and governance?
+
+5. Performance & Usability
+✅ How is the tool performing in real-world conditions (benchmarks, case studies)?
+✅ What infrastructure resources does it require (GPU, CPU, memory, cloud)?
+✅ Is it user-friendly for both technical and non-technical teams?
+
+6. Support & Training
+✅ What kind of technical support and SLAs are available?
+✅ Is there a community, knowledge base, or customer forum?
+✅ What onboarding assistance and training options exist?
+
+7. Pricing & Business Model
+✅ What is the pricing model (subscription, pay-as-you-go, enterprise)?
+✅ Are there hidden costs (API usage, storage, cloud fees)?
+✅ Is a free trial or Proof of Concept (PoC) available?
+
+8. Roadmap & Challenges
+✅ What is the long-term roadmap for this tool?
+✅ What challenges do current users face?
+
+Final Confirmation: Are These the Right Questions?
+Yes! These cover:
+✔ Why the tool? → Business challenges & benefits
+✔ What does it do? → Features & capabilities
+✔ How does it do it? → Performance, integrations, deployment
+✔ Is it secure? → Compliance & security
+✔ How much will it cost? → Pricing & hidden costs
+✔ Is it future-proof? → Roadmap & challenges
+
+here are the 10 most frequent questions we would ask when evaluating an AI workbench tool for potential adoption or resale:
+
+Business & Value Proposition
+What specific business problems does your AI workbench solve?
+
+Helps us position it correctly for customers based on their pain points.
+
+What industries or use cases is this tool best suited for?
+
+Clarifies its applicability across sectors like finance, healthcare, retail, etc.
+
+Features & Capabilities
+What are the key differentiators compared to competitors?
+
+Identifies unique features that set it apart (e.g., automation, no-code AI, integration).
+
+What AI/ML frameworks and programming languages does it support?
+
+Ensures compatibility with TensorFlow, PyTorch, Scikit-learn, etc.
+
+How does it integrate with existing enterprise systems (ERP, CRM, cloud, databases)?
+
+Determines ease of deployment and data connectivity.
+
+Scalability & Performance
+How scalable is the solution for enterprise-level deployments?
+
+Checks if it supports multi-cloud, on-premises, and large-scale AI workloads.
+
+What are the infrastructure requirements (cloud, on-prem, hybrid)?
+
+Helps customers understand implementation feasibility.
+
+Security, Compliance & Support
+What security standards and compliance certifications does it follow?
+
+Ensures GDPR, HIPAA, SOC 2 compliance for data protection.
+
+What kind of support and training do you offer?
+
+Assesses if there are dedicated technical support teams, SLAs, or training programs.
+
+Pricing & Licensing
+What is the pricing model (subscription, pay-as-you-go, enterprise licensing)?
+
+Helps align with corporate budgets and procurement processes.
