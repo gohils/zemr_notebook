@@ -1,0 +1,32 @@
+{
+  "workflow_name": "customer_onboarding",
+  "version": 3,
+  "tasks": [
+    {
+      "name": "validate_customer_info",
+      "type": "python_function",
+      "function": "validate_customer_info"
+    },
+    {
+      "name": "kyc_verification",
+      "type": "parallel",
+      "branches": [
+        { "name": "driver_license_verification", "function": "verify_driver_license" },
+        { "name": "passport_verification", "function": "verify_passport" },
+        { "name": "address_verification", "function": "verify_address" }
+      ]
+    },
+    {
+      "name": "conditional_account_creation",
+      "type": "conditional",
+      "condition": "all_kyc_passed",
+      "true_branch": [
+        { "name": "create_customer_account", "function": "create_customer_account" },
+        { "name": "send_welcome_email", "function": "send_welcome_email" }
+      ],
+      "false_branch": [
+        { "name": "notify_kyc_failure", "function": "notify_kyc_failure" }
+      ]
+    }
+  ]
+}
