@@ -1,0 +1,4 @@
+product_id,product_name,category,price,source_updated_time
+1,Laptop,Electronics,1200,2026-07-01 10:00:00
+2,Phone,Electronics,800,2026-07-01 10:00:00
+3,Desk,Furniture,300,2026-07-01 10:00:00

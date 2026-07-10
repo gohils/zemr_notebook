@@ -1,0 +1,6 @@
+customer_id,customer_name,city,state,country,segment,source_updated_time
+1,John Doe,New York,NY,USA,A,2026-07-01 10:00:00
+2,Jane Smith,Los Angeles,CA,USA,B,2026-07-01 10:00:00
+3,Michael Johnson,San Francisco,CA,USA,A,2026-07-01 10:00:00
+4,Emily Brown,New York,NY,USA,A,2026-07-01 10:00:00
+5,James Price,Chicago,IL,USA,C,2026-07-01 10:00:00
