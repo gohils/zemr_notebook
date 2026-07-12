@@ -1,0 +1,11 @@
+{
+    "pipeline_name": "customer_dbt_pipeline",
+    "git": {
+        "repo": "https://github.com/gohils/dbt_lakehouse1.git",
+        "branch": "master"
+    },
+    "dbt": {
+        "commands": ["deps", "build", "test"],
+        "models": ["customer"]
+    }
+}
