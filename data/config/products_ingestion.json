@@ -1,0 +1,29 @@
+{
+  "pipeline_name": "products_raw_ingestion",
+  "extract": {
+    "class_name": "CsvExtractor"
+  },
+  "transformations": [
+    {
+      "class_name": "RenameColumns",
+      "parameters": {
+        "mapping": {
+          "product_name": "product_desc",
+          "price": "unit_price"
+        }
+      }
+    },
+    {
+      "class_name": "AddAuditColumns",
+      "parameters": {
+        "source_system": "github_demo_products"
+      }
+    }
+  ],
+  "load": {
+    "class_name": "BigQueryLoader",
+    "parameters": {
+      "write_disposition": "WRITE_TRUNCATE"
+    }
+  }
+}

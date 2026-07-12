@@ -1,0 +1,30 @@
+
+  {
+  "pipeline_name": "sales_orders_raw_ingestion",
+  "extract": {
+    "class_name": "CsvExtractor"
+  },
+  "transformations": [
+    {
+      "class_name": "RenameColumns",
+      "parameters": {
+        "mapping": {
+          "order_date": "order_dt",
+          "amount": "order_amount"
+        }
+      }
+    },
+    {
+      "class_name": "AddAuditColumns",
+      "parameters": {
+        "source_system": "github_demo_sales_orders"
+      }
+    }
+  ],
+  "load": {
+    "class_name": "BigQueryLoader",
+    "parameters": {
+      "write_disposition": "WRITE_TRUNCATE"
+    }
+  }
+}

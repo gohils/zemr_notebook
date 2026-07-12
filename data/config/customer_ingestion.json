@@ -1,0 +1,28 @@
+{
+    "pipeline_name": "customer_raw_ingestion",
+    "extract": {
+        "class_name": "CsvExtractor"
+    },
+    "transformations": [
+        {
+            "class_name": "RenameColumns",
+            "parameters": {
+                "mapping": {
+                    "first_name": "customer_name"
+                }
+            }
+        },
+        {
+            "class_name": "AddAuditColumns",
+            "parameters": {
+                "source_system": "github_demo"
+            }
+        }
+    ],
+    "load": {
+        "class_name": "BigQueryLoader",
+        "parameters": {
+            "write_disposition": "WRITE_TRUNCATE"
+        }
+    }
+}
