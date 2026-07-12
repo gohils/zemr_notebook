@@ -1,0 +1,66 @@
+{
+  "data_pipeline": {
+    "pipeline_name": "crm_sales_transaction_pipeline_demo",
+    "pipeline_id": "dp104-demo",
+    "source_system": "CRM",
+    "datasource_name": "sales_data",
+    "load_type": "full",
+    "job_parameters": {
+      "job_size": "small",
+      "job_type": "delta"
+    }
+  },
+  "pre_processing": {
+    "tasks": []
+  },
+  "extract": {
+    "module": "etl_framework.datasources.csv",
+    "class_name": "CSVDataSource",
+    "parameters": {
+      "input_path": "sample_data/customer_nested.csv",
+      "header": true,
+      "delimiter": ","
+    }
+  },
+  "technical_transformations": {
+    "tasks": [
+      {
+        "name": "flatten_json",
+        "module": "etl_framework.transformers.json_flatten",
+        "class_name": "JSONFlatten",
+        "parameters": {
+          "flatten_columns": ["customer.address"]
+        }
+      },
+      {
+        "name": "schema_standardization",
+        "module": "etl_framework.transformers.schema",
+        "class_name": "SchemaNormalizer",
+        "parameters": {
+          "target_schema": "customer_v1"
+        }
+      }
+    ]
+  },
+  "load": {
+    "module": "etl_framework.loaders.parquet",
+    "class_name": "ParquetLoader",
+    "parameters": {
+      "destination_path": "sample_data/output/customer",
+      "mode": "overwrite"
+    }
+  },
+  "post_processing": {
+    "tasks": [
+      {
+        "name": "archive_source_file",
+        "module": "etl_framework.postprocessing.archive",
+        "class_name": "ArchiveFile",
+        "parameters": {
+          "source": "sample_data/customer_nested.csv",
+          "archive_location": "sample_data/archive"
+        }
+      }
+    ]
+  }
+}

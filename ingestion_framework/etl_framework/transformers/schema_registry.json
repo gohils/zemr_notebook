@@ -1,0 +1,12 @@
+{
+  "customer_v1": {
+    "columns": {
+      "cust_id": {"rename": "customer_id", "dtype": "int"},
+      "cust_name": {"rename": "customer_name", "dtype": "string"},
+      "email": {"rename": "email", "dtype": "string"},
+      "signup_dt": {"rename": "signup_date", "dtype": "datetime"},
+      "amount": {"rename": "order_amount", "dtype": "float"}
+    },
+    "add_missing_as_null": true
+  }
+}

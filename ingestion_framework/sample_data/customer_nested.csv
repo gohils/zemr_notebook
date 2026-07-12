@@ -1,0 +1,5 @@
+cust_id,cust_name,email,signup_dt,amount,customer.address
+1,Alice Nguyen,alice@example.com,2024-01-15,250.75,"{""city"": ""Melbourne"", ""zip"": ""3000""}"
+2,Bob Smith,bob@example.com,2024-02-20,99.99,"{""city"": ""Sydney"", ""zip"": ""2000""}"
+3,Carla Diaz,carla@example.com,2024-03-05,410.00,"{""city"": ""Brisbane"", ""zip"": ""4000""}"
+4,David Chen,david@example.com,2024-04-11,75.50,"{""city"": ""Perth"", ""zip"": ""6000""}"

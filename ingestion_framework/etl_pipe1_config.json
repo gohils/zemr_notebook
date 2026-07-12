@@ -1,0 +1,61 @@
+{
+  "pipeline": {
+    "name": "crm_sales_pipeline"
+  },
+  "pre_processing": {
+    "tasks": [
+      {
+        "name": "unzip_customer_file",
+        "module": "__main__",
+        "class_name": "UnzipFile",
+        "parameters": {
+          "input_file": "customer.zip"
+        }
+      }
+    ]
+  },
+  "extract": {
+    "name": "read_customer_csv",
+    "module": "__main__",
+    "class_name": "CSVExtractor",
+    "parameters": {
+      "file_path": "customer.csv"
+    }
+  },
+  "technical_transformations": {
+    "tasks": [
+      {
+        "name": "normalize_columns",
+        "module": "__main__",
+        "class_name": "ColumnNormalizer",
+        "parameters": {}
+      },
+      {
+        "name": "add_audit",
+        "module": "__main__",
+        "class_name": "AddAuditColumn",
+        "parameters": {
+          "source_system": "CRM"
+        }
+      }
+    ]
+  },
+  "load": {
+    "name": "load_customer",
+    "module": "__main__",
+    "class_name": "CSVLoader",
+    "parameters": {
+      "target_path": "/output/customer.csv"
+    }
+  },
+  "post_processing": {
+    "tasks": [
+      {
+        "name": "archive",
+        "module": "__main__",
+        "class_name": "ArchiveFile",
+        "parameters": {}
+      }
+    ]
+  }
+}

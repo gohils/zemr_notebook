@@ -1,0 +1,89 @@
+{
+  "data_pipeline": {
+    "pipeline_name": "crm_sales_transaction_pipeline",
+    "pipeline_id": "dp104",
+    "source_system": "CRM",
+    "datasource_name": "sales_data",
+    "load_type": "full",
+    "job_parameters": {
+      "job_size": "small",
+      "job_type": "delta"
+    }
+  },
+  "pre_processing": {
+    "tasks": [
+      {
+        "name": "unzip_input_file",
+        "module": "etl_framework.preprocessing.unzip_file",
+        "class_name": "UnzipFile",
+        "parameters": {
+          "input_path": "C:/temp/data_file1.zip",
+          "output_path": "C:/temp/unzip/",
+          "delete_source": false
+        }
+      },
+      {
+        "name": "decrypt_file",
+        "module": "etl_framework.preprocessing.pgp",
+        "class_name": "PGPDecryptor",
+        "parameters": {
+          "input_path": "C:/temp/data_file1.csv.pgp",
+          "secret_reference": "pgp/private/key"
+        }
+      }
+    ]
+  },
+  "extract": {
+    "module": "etl_framework.datasources.csv",
+    "class_name": "CSVDataSource",
+    "parameters": {
+      "input_path": "C:/temp/customer.csv",
+      "header": true,
+      "delimiter": ","
+    }
+  },
+  "technical_transformations": {
+    "tasks": [
+      {
+        "name": "flatten_json",
+        "module": "etl_framework.transformers.json_flatten",
+        "class_name": "JSONFlatten",
+        "parameters": {
+          "flatten_columns": [
+            "customer.address",
+            "customer.orders"
+          ]
+        }
+      },
+      {
+        "name": "schema_standardization",
+        "module": "etl_framework.transformers.schema",
+        "class_name": "SchemaNormalizer",
+        "parameters": {
+          "target_schema": "customer_v1"
+        }
+      }
+    ]
+  },
+  "load": {
+    "module": "etl_framework.loaders.parquet",
+    "class_name": "ParquetLoader",
+    "parameters": {
+      "destination_path": "C:/temp/output/customer",
+      "mode": "append"
+    }
+  },
+  "post_processing": {
+    "tasks": [
+      {
+        "name": "archive_source_file",
+        "module": "etl_framework.postprocessing.archive",
+        "class_name": "ArchiveFile",
+        "parameters": {
+          "source": "C:/temp/customer.csv",
+          "archive_location": "C:/archive/customer"
+        }
+      }
+    ]
+  }
+}
